@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>Pages/Page1.qml</file>
+        <file>Pages/Page2.qml</file>
+        <file>DigitalClock.qml</file>
+    </qresource>
+</RCC>
