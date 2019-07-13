@@ -13,4 +13,13 @@ export QT_QPA_EGLFS_HIDECURSOR=1
 ```
 
 
+### Auto start
+
+There is a _systemd_ startup script in the _startup_ directory. To use, copy to _/lib/systemd/system/_ on the Pi then execute the following commands:
+
+```
+   $ sudo systemctl daemon-reload
+
+   $ sudo systemctl enable qphotoframe.service
+```
 

@@ -1,0 +1,14 @@
+[Unit]
+Description=Digital Photoframe
+After=multi-user.target
+
+[Service]
+Environment=QT_QPA_EGLFS_PHYSICAL_WIDTH=155
+Environment=QT_QPA_EGLFS_PHYSICAL_HEIGHT=86
+Environment=QT_QPA_EGLFS_HIDECURSOR=1
+Type=idle
+ExecStart=/opt/QPhotoFrame/bin/QPhotoFrame > /var/log/qphotoframe.log 2>&1
+
+[Install]
+WantedBy=multi-user.target
+
