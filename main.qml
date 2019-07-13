@@ -15,7 +15,6 @@ ApplicationWindow {
       currentIndex: tabBar.currentIndex
 
       Page1 {}
-
       Page2 {}
    }
 
@@ -24,16 +23,18 @@ ApplicationWindow {
       currentIndex: swipeView.currentIndex
 
       TabButton {
-         text: qsTr("Page 1")
+         height: 5
+         background: Rectangle {
+            color: tabBar.currentIndex == 0 ? "green" : "orange"
+            radius: 5
+         }
       }
       TabButton {
-         text: qsTr("Page 2")
+         height: 5
+         background: Rectangle {
+            color: tabBar.currentIndex == 1 ? "green" : "orange"
+            radius: 5
+         }
       }
-
-//      MouseArea {
-//         anchors.fill: parent
-//         onClicked: { console.log ("xxxxxxxxxxxxxxxxxxxxxxxxxx");
-//         }
-//      }
    }
 }
