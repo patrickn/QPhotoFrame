@@ -126,7 +126,6 @@ Item {
                   font.family: "Helvetica"
                   font.pointSize: tempFontPointSize
                   text: "19.0 °C"
-//                  anchors.verticalCenterOffset: 0
                   anchors.verticalCenter: parent.verticalCenter
                   anchors.horizontalCenter: parent.horizontalCenter
                }
@@ -148,7 +147,6 @@ Item {
                   font.family: "Helvetica"
                   font.pointSize: tempFontPointSize
                   text: "14.5 °C"
-//                  anchors.verticalCenterOffset: 4
                   anchors.verticalCenter: parent.verticalCenter
                   anchors.horizontalCenter: parent.horizontalCenter
                }

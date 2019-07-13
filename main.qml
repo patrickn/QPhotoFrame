@@ -6,8 +6,8 @@ ApplicationWindow {
    visible: true
    title: qsTr("Photo Frame")
 
-//   height: 720
-//   width: 1280
+   //   height: 720
+   //   width: 1280
 
    SwipeView {
       id: swipeView
@@ -29,5 +29,11 @@ ApplicationWindow {
       TabButton {
          text: qsTr("Page 2")
       }
+
+//      MouseArea {
+//         anchors.fill: parent
+//         onClicked: { console.log ("xxxxxxxxxxxxxxxxxxxxxxxxxx");
+//         }
+//      }
    }
 }
