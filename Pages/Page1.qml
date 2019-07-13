@@ -84,7 +84,7 @@ Item {
                id: clockDisplay
 
                Text {
-                  text: digitalClock.hours
+                  text: digitalClock.hours < 10 ? "0" + digitalClock.hours : digitalClock.hours
                   font.pointSize: clockFontPoinSize
                   font.family: "Courier"
                   font.letterSpacing: -10
