@@ -1,11 +1,16 @@
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include "WeatherData/WeatherData.h"
+//-----------------------------------------------------------------------------
 
-int main(int argc, char *argv[])
+auto main(int argc, char *argv[]) -> int
 {
    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-
    QGuiApplication app(argc, argv);
+
+   qmlRegisterType<WeatherData>("WeatherData", 1, 0, "WeatherData");
 
    QQmlApplicationEngine engine;
    const QUrl url(QStringLiteral("qrc:/main.qml"));

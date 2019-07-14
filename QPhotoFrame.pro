@@ -1,9 +1,12 @@
-QT += quick
 CONFIG += c++11
+QT += core network positioning qml quick
+#requires(qtConfig(bearermanagement))
+
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
+        WeatherData/WeatherData.cpp \
         main.cpp
 
 RESOURCES += qml.qrc
@@ -19,7 +22,8 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-HEADERS +=
+HEADERS += \
+    WeatherData/WeatherData.h
 
 DISTFILES += \
    readme.md
