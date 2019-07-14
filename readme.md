@@ -23,3 +23,23 @@ There is a _systemd_ startup script in the _startup_ directory. To use, copy to 
    $ sudo systemctl enable qphotoframe.service
 ```
 
+### Troubleshooting
+
+After 'apt update' or any other changes you may start getting QOpenGLShader errors:
+
+```
+QOpenGLShaderProgram: could not create shader program
+QOpenGLShader: could not create shader
+QOpenGLShader: could not create shader
+shader compilation failed:
+```
+
+It seems that the lib _/usr/lib/arm-linux-gnueabihf/libGLESv2.so.2_ is wrong and sometimes gets replaced when updating. The correct lib is _/opt/vc/lib/libbrcmGLESv2.so_. So:
+
+```
+    $ sudo mv /usr/lib/arm-linux-gnueabihf/libGLESv2.so.2 /usr/lib/arm-linux-gnueabihf/libGLESv2.so.2.backup
+
+    $ sudo ln -s /opt/vc/lib/libbrcmGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so.2
+```
+
+
