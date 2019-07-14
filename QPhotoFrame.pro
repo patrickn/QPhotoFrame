@@ -6,7 +6,8 @@ QT += core network positioning qml quick
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
-        WeatherData/WeatherData.cpp \
+        WeatherModel/WeatherData.cpp \
+        WeatherModel/WeatherModel.cpp \
         main.cpp
 
 RESOURCES += qml.qrc
@@ -23,7 +24,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    WeatherData/WeatherData.h
+    WeatherModel/WeatherData.h \
+    WeatherModel/WeatherModel.h
 
 DISTFILES += \
    readme.md
