@@ -2,7 +2,7 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.12
 
-import WeatherData 1.0
+import WeatherInfo 1.0
 
 import ".."
 
@@ -17,8 +17,8 @@ Item {
       id: digitalClock
    }
 
-   WeatherData {
-       id: weatherData
+   WeatherModel {
+       id: weatherModel
    }
 
 
@@ -112,7 +112,7 @@ Item {
          }
 
          Text {
-             text: weatherData.hasValidCity ? weatherData.city : ""
+             text: weatherModel.hasValidCity ? weatherModel.city : ""
              anchors.horizontalCenter: parent.horizontalCenter
          }
 
@@ -158,7 +158,7 @@ Item {
                   id: externalTemp
                   font.family: "Helvetica"
                   font.pointSize: tempFontPointSize
-                  text: "14.5 °C"
+                  text: weatherModel.hasValidWeather ? weatherModel.weather.temperature + "C" : "??"
                   anchors.verticalCenter: parent.verticalCenter
                   anchors.horizontalCenter: parent.horizontalCenter
                }

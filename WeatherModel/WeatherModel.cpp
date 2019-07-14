@@ -10,6 +10,9 @@
 #include "WeatherModel.h"
 //-----------------------------------------------------------------------------
 
+static const double ZERO_KELVIN = 273.15;
+
+
 WeatherModel::WeatherModel(QObject* parent)
     : QObject(parent),
       _src(nullptr),
@@ -79,6 +82,13 @@ bool WeatherModel::hasValidCity() const
     return (!(_city.isEmpty()) && _city.size() > 1 && _city != "");
 }
 
+bool WeatherModel::hasValidWeather() const
+{
+    return hasValidCity() && (!(_now.weatherIcon().isEmpty()) &&
+                              (_now.weatherIcon().size() > 1) &&
+                              _now.weatherIcon() != "");
+}
+
 QString WeatherModel::city() const
 {
     return _city;
@@ -89,6 +99,11 @@ void WeatherModel::setCity(const QString& value)
     _city = value;
     emit cityChanged();
     refreshWeather();
+}
+
+WeatherData* WeatherModel::weather() const
+{
+    return const_cast<WeatherData*>(&(_now));
 }
 
 void WeatherModel::queryCity()
@@ -174,6 +189,11 @@ void WeatherModel::handleGeoNetworkData(QNetworkReply* networkReply)
     networkReply->deleteLater();
 }
 
+static QString niceTemperatureString(double t)
+{
+    return QString::number(qRound(t - ZERO_KELVIN)) + QChar(0xB0);
+}
+
 void WeatherModel::handleWeatherNetworkData(QNetworkReply* networkReply)
 {
     qDebug() << "WeatherData::handleWeatherNetworkData(...)";
@@ -183,10 +203,10 @@ void WeatherModel::handleWeatherNetworkData(QNetworkReply* networkReply)
     }
 
     if (!networkReply->error()) {
-//        foreach (WeatherData* inf, _forecast) {
-//            delete inf;
-//        }
-//        _forecast.clear();
+        foreach (WeatherData* inf, _forecast) {
+            delete inf;
+        }
+        _forecast.clear();
 
         QJsonDocument document = QJsonDocument::fromJson(networkReply->readAll());
 
@@ -200,14 +220,14 @@ void WeatherModel::handleWeatherNetworkData(QNetworkReply* networkReply)
                 QJsonArray weatherArray = val.toArray();
                 val = weatherArray.at(0);
                 tempObject = val.toObject();
-//                _now.setWeatherDescription(tempObject.value(QStringLiteral("description")).toString());
-//                _now.setWeatherIcon(tempObject.value("icon").toString());
+                _now.setWeatherDescription(tempObject.value(QStringLiteral("description")).toString());
+                _now.setWeatherIcon(tempObject.value("icon").toString());
             }
             if (obj.contains(QStringLiteral("main"))) {
                 val = obj.value(QStringLiteral("main"));
                 tempObject = val.toObject();
                 val = tempObject.value(QStringLiteral("temp"));
-//                _now.setTemperature(niceTemperatureString(val.toDouble()));
+                _now.setTemperature(niceTemperatureString(val.toDouble()));
             }
         }
     }
@@ -228,6 +248,9 @@ void WeatherModel::handleWeatherNetworkData(QNetworkReply* networkReply)
 //    connect(rep, &QNetworkReply::finished, this, [this, rep]() {
 //        handleForecastNetworkData(rep);
 //    });
+
+    // Move this to handleForecastNetworkData
+    emit weatherChanged();
 }
 
 void WeatherModel::handleForecastNetworkData(QNetworkReply* networkReply)
