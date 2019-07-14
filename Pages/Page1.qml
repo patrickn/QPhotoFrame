@@ -2,6 +2,8 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.12
 
+import WeatherData 1.0
+
 import ".."
 
 Item {
@@ -14,6 +16,11 @@ Item {
    DigitalClock {
       id: digitalClock
    }
+
+   WeatherData {
+       id: weatherData
+   }
+
 
    Rectangle {
       id: screenBorder
@@ -102,6 +109,11 @@ Item {
                   font.letterSpacing: -10
                }
             }
+         }
+
+         Text {
+             text: weatherData.hasValidCity ? weatherData.city : ""
+             anchors.horizontalCenter: parent.horizontalCenter
          }
 
          Column {
