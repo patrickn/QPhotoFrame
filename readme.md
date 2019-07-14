@@ -7,7 +7,20 @@
 For information about cross compiling for Raspberry Pi using Qt see the article at https://mechatronicsblog.com/cross-compile-and-deploy-qt-5-12-for-raspberry-pi/
 
 
-### Auto start
+### Dependencies
+
+Apart from those from the article referenced above, you will need to install the following packages using:
+
+```
+   $ sudo apt install <package-name>
+```
+
+* geoclue-2.0
+
+
+
+
+### Auto startup
 
 There is a _systemd_ startup script in the _startup_ directory. To use, copy to _/lib/systemd/system/_ on the Pi then execute the following commands:
 
