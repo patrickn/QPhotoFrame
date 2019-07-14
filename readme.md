@@ -4,13 +4,7 @@
 * Raspberry Pi 3+
 * Official 7" Touchscreen
 
-If the touchscreen is not working make sure that _/dev/input/event*_ is readable by the user running the app.
-
-Hide the mouse cursor:
-
-```
-export QT_QPA_EGLFS_HIDECURSOR=1
-```
+For information about cross compiling for Raspberry Pi using Qt see the article at https://mechatronicsblog.com/cross-compile-and-deploy-qt-5-12-for-raspberry-pi/
 
 
 ### Auto start
@@ -24,6 +18,15 @@ There is a _systemd_ startup script in the _startup_ directory. To use, copy to 
 ```
 
 ### Troubleshooting
+
+If the touchscreen is not working make sure that _/dev/input/event*_ is readable by the user running the app.
+
+Hide the mouse cursor:
+
+```
+export QT_QPA_EGLFS_HIDECURSOR=1
+```
+
 
 After 'apt update' or any other changes you may start getting QOpenGLShader errors:
 
