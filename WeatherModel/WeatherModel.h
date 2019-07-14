@@ -8,7 +8,7 @@
 //-----------------------------------------------------------------------------
 
 
-class WeatherData : public QObject
+class WeatherModel : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool ready READ ready NOTIFY readyChanged)
@@ -17,8 +17,8 @@ class WeatherData : public QObject
     Q_PROPERTY(QString city READ city WRITE setCity NOTIFY cityChanged)
 
 public:
-    explicit WeatherData(QObject *parent = nullptr);
-    ~WeatherData();
+    explicit WeatherModel(QObject *parent = nullptr);
+    ~WeatherModel();
 
     bool ready() const;
     bool hasSource() const;
@@ -37,6 +37,8 @@ private slots:
     void positionUpdated(QGeoPositionInfo gpsPos);
     void positionError(QGeoPositionInfoSource::Error e);
     void handleGeoNetworkData(QNetworkReply* networkReply);
+    void handleWeatherNetworkData(QNetworkReply* networkReply);
+    void handleForecastNetworkData(QNetworkReply* networkReply);
 
 signals:
     void readyChanged();
