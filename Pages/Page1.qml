@@ -9,7 +9,7 @@ Item {
    readonly property int clockFontPoinSize: 45
    readonly property int tempFontPointSize: 15
    readonly property int smallLabelFontPointSize: 8
-
+   readonly property int tinyLabelFontPointSize: 6
 
    DigitalClock {
       id: digitalClock
@@ -112,29 +112,33 @@ Item {
             width: parent.width
             spacing: 5
 
-            Text {
-               text: qsTr("Internal Temperature")
-               font.pointSize: smallLabelFontPointSize
-            }
             Rectangle {
                border.color: "grey"
                color: "transparent"
                width: parent.width
                height: internalTemp.height
-               Text {
-                  id: internalTemp
-                  font.family: "Helvetica"
-                  font.pointSize: tempFontPointSize
-                  text: "19.0 °C"
-                  anchors.verticalCenter: parent.verticalCenter
-                  anchors.horizontalCenter: parent.horizontalCenter
+
+               Row {
+                  anchors.fill: parent
+                  anchors.leftMargin: 3
+                  spacing: 10
+
+                  Text {
+                     text: qsTr("Internal\nTemperature")
+                     font.pointSize: tinyLabelFontPointSize
+                     anchors.verticalCenter: parent.verticalCenter
+                  }
+
+                  Text {
+                     id: internalTemp
+                     font.family: "Helvetica"
+                     font.pointSize: tempFontPointSize
+                     text: "19.0 °C"
+                     anchors.verticalCenter: parent.verticalCenter
+                  }
                }
             }
 
-            Text {
-               text: qsTr("External Temperature")
-               font.pointSize: smallLabelFontPointSize
-            }
             Rectangle {
                id: rectangle
                border.color: "grey"
@@ -142,13 +146,24 @@ Item {
                width: parent.width
                height: externalTemp.height
 
-               Text {
-                  id: externalTemp
-                  font.family: "Helvetica"
-                  font.pointSize: tempFontPointSize
-                  text: "14.5 °C"
-                  anchors.verticalCenter: parent.verticalCenter
-                  anchors.horizontalCenter: parent.horizontalCenter
+               Row {
+                  anchors.fill: parent
+                  anchors.leftMargin: 3
+                  spacing: 10
+
+                  Text {
+                     text: qsTr("External\nTemperature")
+                     font.pointSize: tinyLabelFontPointSize
+                     anchors.verticalCenter: parent.verticalCenter
+                  }
+
+                  Text {
+                     id: externalTemp
+                     font.family: "Helvetica"
+                     font.pointSize: tempFontPointSize
+                     text: "14.5 °C"
+                     anchors.verticalCenter: parent.verticalCenter
+                  }
                }
             }
          }
