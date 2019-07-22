@@ -173,7 +173,7 @@ Item {
                      id: externalTemp
                      font.family: "Helvetica"
                      font.pointSize: tempFontPointSize
-                     text: "14.5 °C"
+                     text: weatherModel.hasValidWeather ? weatherModel.weather.temperature + "C" : "??"
                      anchors.verticalCenter: parent.verticalCenter
                   }
                }

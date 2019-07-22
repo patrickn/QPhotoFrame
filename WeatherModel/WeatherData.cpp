@@ -59,7 +59,7 @@ void WeatherData::setWeatherDescription(const QString& value)
 
 void WeatherData::setTemperature(const QString& value)
 {
-    qDebug() << "Set temperature: " << value;
+    qDebug() << "Set external temperature: " << value;
     _temperature = value;
     emit dataChanged();
 }

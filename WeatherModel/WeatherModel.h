@@ -1,10 +1,12 @@
 //-----------------------------------------------------------------------------
 #pragma once
 //-----------------------------------------------------------------------------
+#include <QElapsedTimer>
 #include <QGeoPositionInfoSource>
 #include <QNetworkAccessManager>
 #include <QNetworkSession>
 #include <QObject>
+#include <QTimer>
 #include "WeatherData.h"
 //-----------------------------------------------------------------------------
 
@@ -22,6 +24,8 @@ class WeatherModel : public QObject
 public:
     explicit WeatherModel(QObject* parent = nullptr);
     ~WeatherModel();
+
+    static const int baseMsBeforeNewRequest = 5 * 1000; // 5 s, increased after each missing answer up to 10x
 
     bool ready() const;
     bool hasSource() const;
@@ -62,4 +66,8 @@ private:
     QString _city;
     bool _ready;
     int _nErrors;
+    int _minMsBeforeNewRequest;
+    QElapsedTimer _throttle;
+    QTimer _delayedCityRequestTimer;
+    QTimer _requestNewWeatherTimer;
 };

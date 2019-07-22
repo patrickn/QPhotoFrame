@@ -18,8 +18,18 @@ WeatherModel::WeatherModel(QObject* parent)
       _src(nullptr),
       _nam(nullptr),
       _ns(nullptr),
-      _nErrors(0)
+      _nErrors(0),
+      _minMsBeforeNewRequest(baseMsBeforeNewRequest)
 {
+    _delayedCityRequestTimer.setSingleShot(true);
+    _delayedCityRequestTimer.setInterval(1000); // 1 s
+    _requestNewWeatherTimer.setSingleShot(false);
+    _requestNewWeatherTimer.setInterval(20 * 60 * 1000); // 20 mins
+    _throttle.invalidate();
+
+    connect(&_delayedCityRequestTimer, SIGNAL(timeout()), this, SLOT(queryCity()));
+    connect(&_requestNewWeatherTimer, SIGNAL(timeout()), this, SLOT(refreshWeather()));
+
     _nam = new QNetworkAccessManager;
 
     QNetworkConfigurationManager ncm;
@@ -52,6 +62,14 @@ bool WeatherModel::hasSource() const
 void WeatherModel::hadError(bool tryAgain)
 {
     qDebug() << "hadError, will " << (tryAgain ? "" : "not ") << "rety";
+    _throttle.start();
+    if (_nErrors < 10) {
+        ++_nErrors;
+    }
+    _minMsBeforeNewRequest = (_nErrors + 1) * baseMsBeforeNewRequest;
+    if (tryAgain) {
+        _delayedCityRequestTimer.start();
+    }
 }
 
 void WeatherModel::refreshWeather()
@@ -110,7 +128,16 @@ void WeatherModel::queryCity()
 {
     qDebug() << "WeatherData::queryCity()";
 
-    // TODO: Don't update more than once a minute to keep server load low
+    // Don't update more than once a minute to keep server load low
+    if (_throttle.isValid() && _throttle.elapsed() < _minMsBeforeNewRequest) {
+        qDebug() << "delaying query of city";
+        if (_delayedCityRequestTimer.isActive()) {
+            _delayedCityRequestTimer.start();
+        }
+    }
+    qDebug() << "requested city";
+    _throttle.start();
+    _minMsBeforeNewRequest = (_nErrors + 1) * baseMsBeforeNewRequest;
 
     QString latitude, longitude;
     longitude.setNum(_coord.longitude());
@@ -169,6 +196,10 @@ void WeatherModel::handleGeoNetworkData(QNetworkReply* networkReply)
 
     if (!networkReply->error()) {
         _nErrors = 0;
+        if (!_throttle.isValid()) {
+            _throttle.start();
+        }
+        _minMsBeforeNewRequest = baseMsBeforeNewRequest;
 
         //convert coordinates to city name
         QJsonDocument document = QJsonDocument::fromJson(networkReply->readAll());
