@@ -29,6 +29,7 @@ WeatherModel::WeatherModel(QObject* parent)
 
     connect(&_delayedCityRequestTimer, SIGNAL(timeout()), this, SLOT(queryCity()));
     connect(&_requestNewWeatherTimer, SIGNAL(timeout()), this, SLOT(refreshWeather()));
+    _requestNewWeatherTimer.start();
 
     _nam = new QNetworkAccessManager;
 
@@ -81,6 +82,7 @@ void WeatherModel::refreshWeather()
         return;
     }
 
+    qDebug() << "refreshing weather";
     QUrl url("http://api.openweathermap.org/data/2.5/weather");
     QUrlQuery query;
 
