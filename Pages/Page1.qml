@@ -113,7 +113,9 @@ Item {
 
          Text {
              text: weatherModel.hasValidCity ? weatherModel.city : ""
-             anchors.horizontalCenter: parent.horizontalCenter
+             width: parent.width
+             horizontalAlignment: Text.AlignHCenter
+             wrapMode: Text.Wrap
          }
 
          Column {
