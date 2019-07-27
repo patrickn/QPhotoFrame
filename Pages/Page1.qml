@@ -68,7 +68,8 @@ Item {
          }
 
          Timer {
-            interval: 5000
+            interval: 1000 * 60 * 10 // 10 mins
+            triggeredOnStart: true
             repeat: true
             running: true
             onTriggered: { image.source = imageURLLookup.getImageURL() }

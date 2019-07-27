@@ -22,7 +22,7 @@ Item {
 
       Row {
          id: leftSide
-         width: parent.width - rightSide.width
+         width: parent.width
          anchors.bottom: parent.bottom
          anchors.bottomMargin: 3
          anchors.top: parent.top

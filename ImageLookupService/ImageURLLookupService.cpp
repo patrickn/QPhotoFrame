@@ -16,6 +16,9 @@ ImageURLLookupService::ImageURLLookupService(QObject* parent)
 
    connect(&_requestNewFileListTimer, SIGNAL(timeout()), this, SLOT(refreshFileList()));
    _requestNewFileListTimer.start();
+
+   // Get the initial image list.
+   refreshFileList();
 }
 
 QString ImageURLLookupService::getImageURL() const
@@ -46,13 +49,17 @@ void ImageURLLookupService::handleNetworkData(QNetworkReply* networkReply)
       return;
    }
 
+   size_t count = 0;
    if (!networkReply->error()) {
       auto all = networkReply->readAll();
       QList<QByteArray> lines = all.split('\n');
       foreach (const QByteArray& line, lines) {
-         _imageFileList.push_back(line);
+         if (!_imageFileList.contains(line)) {
+            _imageFileList.push_back(line);
+            ++count;
+         }
       }
-      qCDebug(imageLookupLog) << "downloaded list of " << _imageFileList.size() << " URL images";
+      qCDebug(imageLookupLog) << "add" << count << "new images to list (total images:" << _imageFileList.size() << ")";
    }
    else {
       qCWarning(imageLookupLog) << "Network error";
