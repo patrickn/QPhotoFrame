@@ -35,7 +35,7 @@ auto main(int argc, char *argv[]) -> int
 
 void customLogMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
-   QString dt = QDateTime::currentDateTime().toString("dd/MM/yyyy hh:mm:sss");
+   QString dt = QDateTime::currentDateTime().toString("dd/MM/yyyy hh:mm:ss");
    QString txt = QString("[%1]").arg(dt);
    QString cat = QString(context.category).leftJustified(8, ' ', true);
 
