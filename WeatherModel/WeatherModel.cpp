@@ -4,6 +4,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonValue>
+#include <QLoggingCategory>
 #include <QNetworkConfigurationManager>
 #include <QNetworkReply>
 #include <QUrlQuery>
@@ -12,6 +13,7 @@
 
 static const double ZERO_KELVIN = 273.15;
 
+Q_LOGGING_CATEGORY(weatherModelLog, "model")
 
 WeatherModel::WeatherModel(QObject* parent)
     : QObject(parent),
@@ -62,7 +64,7 @@ bool WeatherModel::hasSource() const
 
 void WeatherModel::hadError(bool tryAgain)
 {
-    qDebug() << "hadError, will " << (tryAgain ? "" : "not ") << "rety";
+    qCDebug(weatherModelLog) << "hadError, will " << (tryAgain ? "" : "not ") << "rety";
     _throttle.start();
     if (_nErrors < 10) {
         ++_nErrors;
@@ -75,14 +77,12 @@ void WeatherModel::hadError(bool tryAgain)
 
 void WeatherModel::refreshWeather()
 {
-    qDebug() << "WeatherData::refreshWeather()";
-
     if (_city.isEmpty()) {
-        qDebug() << "Cannot refresh weather, no city";
+        qCDebug(weatherModelLog) << "Cannot refresh weather, no city";
         return;
     }
 
-    qDebug() << "refreshing weather";
+    qCDebug(weatherModelLog) << "refreshing weather";
     QUrl url("http://api.openweathermap.org/data/2.5/weather");
     QUrlQuery query;
 
@@ -128,16 +128,14 @@ WeatherData* WeatherModel::weather() const
 
 void WeatherModel::queryCity()
 {
-    qDebug() << "WeatherData::queryCity()";
-
     // Don't update more than once a minute to keep server load low
     if (_throttle.isValid() && _throttle.elapsed() < _minMsBeforeNewRequest) {
-        qDebug() << "delaying query of city";
+        qCDebug(weatherModelLog) << "delaying query of city";
         if (_delayedCityRequestTimer.isActive()) {
             _delayedCityRequestTimer.start();
         }
     }
-    qDebug() << "requested city";
+    qCDebug(weatherModelLog) << "requested city";
     _throttle.start();
     _minMsBeforeNewRequest = (_nErrors + 1) * baseMsBeforeNewRequest;
 
@@ -152,7 +150,7 @@ void WeatherModel::queryCity()
     query.addQueryItem("mode", "json");
     query.addQueryItem("APPID", QStringLiteral("36496bad1955bf3365448965a42b9eac"));
     url.setQuery(query);
-    qDebug() << "submitting API request";
+    qCDebug(weatherModelLog) << "submitting API request";
 
     QNetworkReply* rep = _nam->get(QNetworkRequest(url));
     // connect up the signal right away
@@ -170,13 +168,13 @@ void WeatherModel::networkSessionOpened()
         connect(_src, SIGNAL(error(QGeoPositionInfoSource::Error)), this, SLOT(positionError(QGeoPositionInfoSource::Error)));
         _src->startUpdates();
     } else {
-        qDebug() << "Could not create default source.";
+        qCDebug(weatherModelLog) << "Could not create default source.";
     }
 }
 
 void WeatherModel::positionUpdated(QGeoPositionInfo gpsPos)
 {
-    qDebug() << "WeatherData::positionUpdated(...)";
+    qCDebug(weatherModelLog) << "WeatherData::positionUpdated(...)";
 
     _coord = gpsPos.coordinate();
     queryCity();
@@ -184,12 +182,12 @@ void WeatherModel::positionUpdated(QGeoPositionInfo gpsPos)
 
 void WeatherModel::positionError(QGeoPositionInfoSource::Error e)
 {
-    qDebug() << "WeatherData::positionError(...)";
+    qCDebug(weatherModelLog) << "WeatherData::positionError(...)";
 }
 
 void WeatherModel::handleGeoNetworkData(QNetworkReply* networkReply)
 {
-    qDebug() << "WeatherData::handleGeoNetworkData(...)";
+    qCDebug(weatherModelLog) << "WeatherData::handleGeoNetworkData(...)";
 
     if (!networkReply) {
         hadError(false); // should retry?
@@ -210,7 +208,7 @@ void WeatherModel::handleGeoNetworkData(QNetworkReply* networkReply)
         QJsonValue jv = jo.value(QStringLiteral("name"));
 
         const QString city = jv.toString();
-        qDebug() << "got city: " << city;
+        qCDebug(weatherModelLog) << "got city: " << city;
         if (city != _city) {
             _city = city;
             emit cityChanged();
@@ -229,7 +227,7 @@ static QString niceTemperatureString(double t)
 
 void WeatherModel::handleWeatherNetworkData(QNetworkReply* networkReply)
 {
-    qDebug() << "WeatherData::handleWeatherNetworkData(...)";
+    qCDebug(weatherModelLog) << "WeatherData::handleWeatherNetworkData(...)";
 
     if (!networkReply) {
         return;
@@ -288,6 +286,6 @@ void WeatherModel::handleWeatherNetworkData(QNetworkReply* networkReply)
 
 void WeatherModel::handleForecastNetworkData(QNetworkReply* networkReply)
 {
-    qDebug() << "WeatherData::handleForecastNetworkData(...)";
+    qCDebug(weatherModelLog) << "WeatherData::handleForecastNetworkData(...)";
 
 }
