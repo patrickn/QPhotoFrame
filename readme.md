@@ -30,16 +30,17 @@ There is a _systemd_ startup script in the _startup_ directory. To use, copy to 
    $ sudo systemctl enable qphotoframe.service
 ```
 
-### Troubleshooting
-
-If the touchscreen is not working make sure that _/dev/input/event*_ is readable by the user running the app.
-
-Hide the mouse cursor:
+### Raspberry Pi Environment
 
 ```
+export QT_QPA_EGLFS_PHYSICAL_WIDTH=155
+export QT_QPA_EGLFS_PHYSICAL_HEIGHT=86
 export QT_QPA_EGLFS_HIDECURSOR=1
 ```
 
+### Troubleshooting
+
+If the touchscreen is not working make sure that _/dev/input/event*_ is readable by the user running the app.
 
 After 'apt update' or any other changes you may start getting QOpenGLShader errors:
 
