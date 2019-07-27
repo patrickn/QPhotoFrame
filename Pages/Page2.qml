@@ -1,52 +1,65 @@
 import QtQuick 2.12
-import QtQuick.Controls 2.5
+import QtQuick.Controls 2.12
+import QtGraphicalEffects 1.12
+
+import QPhotoFrame 1.0
 
 import ".."
 
-
 Item {
-    DigitalClock {
-       id: digitalClock
-    }
 
-    Row {
-       Rectangle {
-          height: parent.height
-          width: 400
-          border.color: "blue"
-          border.width: 3
-       }
+   Rectangle {
+      id: screenBorder
+      radius: 5
+      anchors.rightMargin: 3
+      anchors.leftMargin: 3
+      anchors.bottomMargin: 3
+      anchors.topMargin: 3
+      anchors.fill: parent
+      border.width: 2
+      border.color: "#fb9797"
+      color: "transparent"
 
-       Column {
-          spacing: 40
+      Row {
+         id: leftSide
+         width: parent.width - rightSide.width
+         anchors.bottom: parent.bottom
+         anchors.bottomMargin: 3
+         anchors.top: parent.top
+         anchors.topMargin: 3
+         anchors.left: parent.left
+         anchors.leftMargin: 3
 
-          Row {
-             id: clockDisplay
+         Image {
+            property var sourceImage
+            id: image
+            fillMode: Image.PreserveAspectCrop
+            sourceImage: getSourceImage()
+            source: sourceImage
+            layer.enabled: true
+            layer.effect: OpacityMask {
+               maskSource: mask
+            }
 
-             Text {
-                text: digitalClock.hours
-                font.pointSize: 70
-             }
-             Text {
-                text: digitalClock.seconds % 2 ? ":" : "."
-                font.pointSize: 70
-             }
-             Text {
-                text: digitalClock.minutes < 10 ? "0" + digitalClock.minutes : digitalClock.minutes
-                font.pointSize: 70
-             }
-          }
+            function getSourceImage() {
+               return "https://placekeanu.com/" + parent.width + "/" + parent.height
+            }
+         }
 
-          Rectangle {
-             width: 50
-             height: 200
-             border.color: "blue"
-             border.width: 3
-             Text {
-                text: "00 C"
-                anchors.centerIn: parent
-             }
-          }
-       }
-    }
+         Rectangle {
+            id: mask
+            width: parent.width
+            height: parent.height
+            radius: 5
+            visible: false
+         }
+
+         Timer {
+            interval: 5000
+            repeat: true
+            running: true
+            onTriggered: { image.sourceImage = image.getSourceImage() }
+         }
+      }
+   }
 }

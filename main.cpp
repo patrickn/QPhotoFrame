@@ -5,6 +5,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QStandardPaths>
+#include "ImageLookupService/ImageURLLookupService.h"
 #include "WeatherModel/WeatherData.h"
 #include "WeatherModel/WeatherModel.h"
 //-----------------------------------------------------------------------------
@@ -17,8 +18,9 @@ auto main(int argc, char *argv[]) -> int
    qInstallMessageHandler(customLogMessageHandler);
    QGuiApplication app(argc, argv);
 
-   qmlRegisterType<WeatherData>("WeatherInfo", 1, 0, "WeatherData");
-   qmlRegisterType<WeatherModel>("WeatherInfo", 1, 0, "WeatherModel");
+   qmlRegisterType<WeatherData>("QPhotoFrame", 1, 0, "WeatherData");
+   qmlRegisterType<WeatherModel>("QPhotoFrame", 1, 0, "WeatherModel");
+   qmlRegisterType<ImageURLLookupService>("QPhotoFrame", 1, 0, "ImageURLLookupService");
    qRegisterMetaType<WeatherData>();
 
    QQmlApplicationEngine engine;
