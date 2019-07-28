@@ -1,4 +1,4 @@
-CONFIG += c++11
+CONFIG += c++14
 QT += core network positioning qml quick
 #requires(qtConfig(bearermanagement))
 

@@ -35,6 +35,7 @@ auto main(int argc, char *argv[]) -> int
    return app.exec();
 }
 
+
 void customLogMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
    QString dt = QDateTime::currentDateTime().toString("dd/MM/yyyy hh:mm:ss");
@@ -60,9 +61,9 @@ void customLogMessageHandler(QtMsgType type, const QMessageLogContext& context, 
          abort();
    }
 
-   static const QDir logLocation = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+   static const QDir logLocation = QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + "/qphotoframe";
    if (!logLocation.exists()) {
-      logLocation.mkdir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+      logLocation.mkdir(QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + "/qphotoframe");
    }
 
    QFile outFile(logLocation.path() + "/message.log");

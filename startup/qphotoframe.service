@@ -7,6 +7,8 @@ Environment=QT_QPA_EGLFS_PHYSICAL_WIDTH=155
 Environment=QT_QPA_EGLFS_PHYSICAL_HEIGHT=86
 Environment=QT_QPA_EGLFS_HIDECURSOR=1
 Type=idle
+User=pi
+Group=pi
 ExecStart=/opt/QPhotoFrame/bin/QPhotoFrame > /var/log/qphotoframe.log 2>&1
 
 [Install]

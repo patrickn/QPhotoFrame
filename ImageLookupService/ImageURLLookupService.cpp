@@ -12,7 +12,7 @@ ImageURLLookupService::ImageURLLookupService(QObject* parent)
    : QObject(parent)
 {
    _requestNewFileListTimer.setSingleShot(false);
-   _requestNewFileListTimer.setInterval(60 * 1000); // TODO: Make File List refresh 24 hours
+   _requestNewFileListTimer.setInterval(24 * 60 * 60 * 1000);
 
    connect(&_requestNewFileListTimer, SIGNAL(timeout()), this, SLOT(refreshFileList()));
    _requestNewFileListTimer.start();
@@ -59,7 +59,7 @@ void ImageURLLookupService::handleNetworkData(QNetworkReply* networkReply)
             ++count;
          }
       }
-      qCDebug(imageLookupLog) << "add" << count << "new images to list (total images:" << _imageFileList.size() << ")";
+      qCDebug(imageLookupLog) << "found" << count << "new images (total listed images:" << _imageFileList.size() << ")";
    }
    else {
       qCWarning(imageLookupLog) << "Network error";
