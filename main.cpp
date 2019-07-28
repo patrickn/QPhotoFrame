@@ -5,6 +5,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QStandardPaths>
+#include "ImageLookupService/ImageURLLookupService.h"
 #include "WeatherModel/WeatherData.h"
 #include "WeatherModel/WeatherModel.h"
 //-----------------------------------------------------------------------------
@@ -17,8 +18,9 @@ auto main(int argc, char *argv[]) -> int
    qInstallMessageHandler(customLogMessageHandler);
    QGuiApplication app(argc, argv);
 
-   qmlRegisterType<WeatherData>("WeatherInfo", 1, 0, "WeatherData");
-   qmlRegisterType<WeatherModel>("WeatherInfo", 1, 0, "WeatherModel");
+   qmlRegisterType<WeatherData>("QPhotoFrame", 1, 0, "WeatherData");
+   qmlRegisterType<WeatherModel>("QPhotoFrame", 1, 0, "WeatherModel");
+   qmlRegisterType<ImageURLLookupService>("QPhotoFrame", 1, 0, "ImageURLLookupService");
    qRegisterMetaType<WeatherData>();
 
    QQmlApplicationEngine engine;
@@ -32,6 +34,7 @@ auto main(int argc, char *argv[]) -> int
 
    return app.exec();
 }
+
 
 void customLogMessageHandler(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
@@ -58,9 +61,9 @@ void customLogMessageHandler(QtMsgType type, const QMessageLogContext& context, 
          abort();
    }
 
-   static const QDir logLocation = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+   static const QDir logLocation = QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + "/qphotoframe";
    if (!logLocation.exists()) {
-      logLocation.mkdir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+      logLocation.mkdir(QStandardPaths::writableLocation(QStandardPaths::HomeLocation) + "/qphotoframe");
    }
 
    QFile outFile(logLocation.path() + "/message.log");

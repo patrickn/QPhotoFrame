@@ -2,7 +2,7 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.12
 
-import WeatherInfo 1.0
+import QPhotoFrame 1.0
 
 import ".."
 
@@ -21,6 +21,9 @@ Item {
        id: weatherModel
    }
 
+   ImageURLLookupService {
+      id: imageURLLookup
+   }
 
    Rectangle {
       id: screenBorder
@@ -47,16 +50,12 @@ Item {
          Image {
             property var sourceImage
             id: image
+            height: parent.height
+            width: parent.width
             fillMode: Image.PreserveAspectCrop
-            sourceImage: getSourceImage()
-            source: sourceImage
             layer.enabled: true
             layer.effect: OpacityMask {
                maskSource: mask
-            }
-
-            function getSourceImage() {
-               return "https://placekeanu.com/" + parent.width + "/" + parent.height
             }
          }
 
@@ -69,10 +68,11 @@ Item {
          }
 
          Timer {
-            interval: 5000
+            interval: 1000 * 60 * 10 // 10 mins
+            triggeredOnStart: true
             repeat: true
             running: true
-            onTriggered: { image.sourceImage = image.getSourceImage() }
+            onTriggered: { image.source = imageURLLookup.getImageURL() }
          }
       }
 
