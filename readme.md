@@ -1,6 +1,6 @@
 ## Raspberry Pi Photo Frame
 
-* Qt 5.12.4
+* Qt 5.13.2
 * Raspberry Pi 3+
 * Official 7" Touchscreen
 
@@ -8,6 +8,35 @@ For information about cross compiling for Raspberry Pi using Qt see the article 
 
 
 ### Dependencies
+
+#### Qt
+
+The following additional Qt modules are needed:
+
+* qtdeclarative
+* qtgraphicaleffects
+* qtlocation
+* qtquickcontrols2
+* qtsvg
+
+From https://wiki.qt.io/RaspberryPi2EGLFS
+
+```
+git clone git://code.qt.io/qt/<qt-module>.git -b <qt-version>
+cd <qt-module>
+
+~/raspi/qt5/bin/qmake
+make
+make install
+```
+
+Then deploy new files by running:
+
+```
+rsync -avz qt5pi pi@raspberrypi.local:/usr/local
+```
+
+#### OS
 
 Apart from those from the article referenced above, you will need to install the following packages using:
 
