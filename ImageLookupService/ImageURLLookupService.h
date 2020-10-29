@@ -12,17 +12,27 @@
 class ImageURLLookupService : public QObject
 {
    Q_OBJECT
+   Q_PROPERTY(QString imageURL READ imageURL NOTIFY imageURLChanged)
 
 public:
    explicit ImageURLLookupService(QObject* parent = nullptr);
 
-   Q_INVOKABLE QString getImageURL() const;
+
+   QString imageURL() const { return m_imageURL; }
+   void setImageURL(const QString& imageURL);
+
+   void refreshImage();
+   void refreshImageList();
 
 private slots:
-   void refreshFileList();
    void handleNetworkData(QNetworkReply* networkReply);
 
+signals:
+   void imageURLChanged();
+
 private:
-   QStringList _imageFileList;
-   QTimer _requestNewFileListTimer;
+   QStringList m_imageList;
+   QTimer m_imageRefreshTimer;
+   QTimer m_imageListRefreshTimer;
+   QString m_imageURL;
 };

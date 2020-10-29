@@ -3,6 +3,7 @@
 #include <QLoggingCategory>
 #include <QNetworkAccessManager>
 #include <QUrl>
+
 #include "ImageURLLookupService.h"
 //-----------------------------------------------------------------------------
 
@@ -11,29 +12,48 @@ Q_LOGGING_CATEGORY(imageLookupLog, "lookup")
 ImageURLLookupService::ImageURLLookupService(QObject* parent)
    : QObject(parent)
 {
-   _requestNewFileListTimer.setSingleShot(false);
-   _requestNewFileListTimer.setInterval(24 * 60 * 60 * 1000);
+   qDebug() << "ImageURLLookupService::ImageURLLookupService(QObject* parent)";
 
-   connect(&_requestNewFileListTimer, SIGNAL(timeout()), this, SLOT(refreshFileList()));
-   _requestNewFileListTimer.start();
+   connect(&m_imageListRefreshTimer, &QTimer::timeout, [this](){ refreshImageList(); });
+   m_imageListRefreshTimer.start(24 * 60 * 60 * 1000);
 
    // Get the initial image list.
-   refreshFileList();
+   refreshImageList();
+
+   connect(&m_imageRefreshTimer, &QTimer::timeout, [this](){ refreshImage(); });
+   m_imageRefreshTimer.start(5000);
 }
 
-QString ImageURLLookupService::getImageURL() const
+void ImageURLLookupService::refreshImage()
 {
-   if (0 == _imageFileList.size()) {
-      return {};
+   qDebug() << "ImageURLLookupService::refreshImage()";
+
+   if (0 == m_imageList.size()) {
+      qDebug() << "   <<< ";
+      return;
    }
 
-   std::uniform_int_distribution<> dist(0, _imageFileList.size() - 1);
+   std::uniform_int_distribution<> dist(0, m_imageList.size() - 1);
    const int line_no = dist(*QRandomGenerator::global());
-   return "https://www.neavey.net/" + _imageFileList[line_no];
+   setImageURL("https://www.neavey.net/" + m_imageList[line_no]);
+   qDebug() << "   <<< " + imageURL();
 }
 
-void ImageURLLookupService::refreshFileList()
+void ImageURLLookupService::setImageURL(const QString& imageURL)
 {
+   qDebug() << "ImageURLLookupService::setImageURL(" << imageURL << ")";
+
+   if (m_imageURL != imageURL)
+   {
+      m_imageURL = imageURL;
+      emit imageURLChanged();
+   }
+}
+
+void ImageURLLookupService::refreshImageList()
+{
+   qDebug() << "ImageURLLookupService::refreshFileList()";
+
    QUrl url("https://www.neavey.net/index.txt");
 
    QNetworkAccessManager* nam = new QNetworkAccessManager(this);
@@ -44,6 +64,8 @@ void ImageURLLookupService::refreshFileList()
 
 void ImageURLLookupService::handleNetworkData(QNetworkReply* networkReply)
 {
+   qDebug() << "ImageURLLookupService::handleNetworkData(QNetworkReply* networkReply)";
+
    if (!networkReply) {
       qCWarning(imageLookupLog) << "Network error";
       return;
@@ -54,15 +76,15 @@ void ImageURLLookupService::handleNetworkData(QNetworkReply* networkReply)
       auto all = networkReply->readAll();
       QList<QByteArray> lines = all.split('\n');
       foreach (const QByteArray& line, lines) {
-         if (!_imageFileList.contains(line)) {
-            _imageFileList.push_back(line);
+         if (!m_imageList.contains(line)) {
+            m_imageList.push_back(line);
             ++count;
          }
       }
-      qCDebug(imageLookupLog) << "found" << count << "new images (total listed images:" << _imageFileList.size() << ")";
+      qCDebug(imageLookupLog) << "found" << count << "new images (total listed images:" << m_imageList.size() << ")";
    }
    else {
-      qCWarning(imageLookupLog) << "Network error";
+      qCWarning(imageLookupLog) << "Network error: " << networkReply->error();
    }
    networkReply->deleteLater();
 }

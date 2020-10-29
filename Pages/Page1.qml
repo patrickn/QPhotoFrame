@@ -3,7 +3,6 @@ import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.12
 
 import QPhotoFrame 1.0
-
 import ".."
 
 Item {
@@ -52,6 +51,7 @@ Item {
             id: image
             height: parent.height
             width: parent.width
+            source: imageURLLookup.imageURL
             fillMode: Image.PreserveAspectCrop
             layer.enabled: true
             layer.effect: OpacityMask {
@@ -65,14 +65,6 @@ Item {
             height: parent.height
             radius: 5
             visible: false
-         }
-
-         Timer {
-            interval: 1000 * 60 * 10 // 10 mins
-            triggeredOnStart: true
-            repeat: true
-            running: true
-            onTriggered: { image.source = imageURLLookup.getImageURL() }
          }
       }
 
@@ -93,19 +85,19 @@ Item {
                Text {
                   text: digitalClock.hours < 10 ? "0" + digitalClock.hours : digitalClock.hours
                   font.pointSize: clockFontPoinSize
-                  font.family: "Courier"
+                  font.family: "Hack"
                   font.letterSpacing: -10
                }
                Text {
                   text: digitalClock.seconds % 2 ? ":" : "."
                   font.pointSize: clockFontPoinSize
-                  font.family: "Courier"
+                  font.family: "Hack"
                   font.letterSpacing: -15
                }
                Text {
                   text: digitalClock.minutes < 10 ? "0" + digitalClock.minutes : digitalClock.minutes
                   font.pointSize: clockFontPoinSize
-                  font.family: "Courier"
+                  font.family: "Hack"
                   font.letterSpacing: -10
                }
             }
@@ -147,7 +139,7 @@ Item {
                      id: internalTemp
                      font.family: "Helvetica"
                      font.pointSize: tempFontPointSize
-                     text: "19.0 °C"
+                     text: "19.0°C"
                      anchors.verticalCenter: parent.verticalCenter
                   }
                }
