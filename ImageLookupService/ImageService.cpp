@@ -25,7 +25,7 @@ QString ImageService::randomImage()
    const int availableImages = imageList().size();
 
    if (availableImages == 0) {
-      return ""; // TODO: Default image not found
+      return "/Assets/error.jpg";
    }
 
    std::uniform_int_distribution<> dist(0, availableImages - 1);

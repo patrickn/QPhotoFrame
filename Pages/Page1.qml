@@ -1,10 +1,10 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.12
+import QtQml 2.12
 
 import QPhotoFrame 1.0
 import "../Controls" as CustomControls
-import ".."
 
 Item {
    id: page1
@@ -16,7 +16,7 @@ Item {
    readonly property int timerSeconds: 60 * 10
    readonly property int margin: 3
 
-   DigitalClock {
+   CustomControls.DigitalClock {
       id: digitalClock
    }
 

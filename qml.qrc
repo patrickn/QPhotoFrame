@@ -3,7 +3,8 @@
         <file>main.qml</file>
         <file>Pages/Page1.qml</file>
         <file>Pages/Page2.qml</file>
-        <file>DigitalClock.qml</file>
         <file>Controls/ProgressBar.qml</file>
+        <file>Assets/error.jpg</file>
+        <file>Controls/DigitalClock.qml</file>
     </qresource>
 </RCC>
