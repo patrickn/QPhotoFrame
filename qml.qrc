@@ -4,5 +4,6 @@
         <file>Pages/Page1.qml</file>
         <file>Pages/Page2.qml</file>
         <file>DigitalClock.qml</file>
+        <file>Controls/ProgressBar.qml</file>
     </qresource>
 </RCC>

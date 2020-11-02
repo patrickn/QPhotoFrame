@@ -3,14 +3,18 @@ import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.12
 
 import QPhotoFrame 1.0
+import "../Controls" as CustomControls
 import ".."
 
 Item {
+   id: page1
 
    readonly property int clockFontPoinSize: 45
    readonly property int tempFontPointSize: 15
    readonly property int smallLabelFontPointSize: 8
    readonly property int tinyLabelFontPointSize: 6
+   readonly property int timerSeconds: 60 * 10
+   readonly property int margin: 3
 
    DigitalClock {
       id: digitalClock
@@ -27,10 +31,10 @@ Item {
    Rectangle {
       id: screenBorder
       radius: 5
-      anchors.rightMargin: 3
-      anchors.leftMargin: 3
-      anchors.bottomMargin: 3
-      anchors.topMargin: 3
+      anchors.rightMargin: page1.margin
+      anchors.leftMargin: page1.margin
+      anchors.bottomMargin: page1.margin
+      anchors.topMargin: page1.margin
       anchors.fill: parent
       border.width: 2
       border.color: "#fb9797"
@@ -40,11 +44,11 @@ Item {
          id: leftSide
          width: parent.width - rightSide.width
          anchors.bottom: parent.bottom
-         anchors.bottomMargin: 3
+         anchors.bottomMargin: page1.margin
          anchors.top: parent.top
-         anchors.topMargin: 3
+         anchors.topMargin: page1.margin
          anchors.left: parent.left
-         anchors.leftMargin: 3
+         anchors.leftMargin: page1.margin
 
          Image {
             id: image
@@ -56,6 +60,19 @@ Item {
             layer.effect: OpacityMask {
                maskSource: mask
             }
+
+            CustomControls.ProgressBar {
+               id: progressBar
+               height: 3
+               anchors.right: parent.right
+               anchors.left: parent.left
+               anchors.bottom: parent.bottom
+               anchors.leftMargin: 2 * page1.margin
+               anchors.rightMargin: 2 * page1.margin
+               anchors.bottomMargin: page1.margin
+               from: 0
+               to: page1.timerSeconds
+            }
          }
 
          Rectangle {
@@ -64,6 +81,21 @@ Item {
             height: parent.height
             radius: 5
             visible: false
+         }
+
+         Timer {
+            id: timer
+            interval: 1000 // 1 second
+            repeat: true
+            running: true
+            onTriggered: {
+               if (progressBar.value < progressBar.to) {
+                  progressBar.value += 1.0
+               } else {
+                  progressBar.value = progressBar.from
+                  image.source = imageService.randomImage
+               }
+            }
          }
       }
 

@@ -18,9 +18,19 @@ ImageService::ImageService(QObject* parent)
    connect(&m_imageListUpdateTimer, &QTimer::timeout, [this](){ updateJSONImageList(); });
    m_imageListUpdateTimer.start(24 * 60 * 60 * 1000); // TODO: Add to settings.
    updateJSONImageList();
+}
 
-   connect(&m_randomImageTimer, &QTimer::timeout, [this](){ updateRandomImage(); });
-   m_randomImageTimer.start(5000); // TODO: Add to settings.
+QString ImageService::randomImage()
+{
+   const int availableImages = imageList().size();
+
+   if (availableImages == 0) {
+      return ""; // TODO: Default image not found
+   }
+
+   std::uniform_int_distribution<> dist(0, availableImages - 1);
+   const int imageNo = dist(*QRandomGenerator::global());
+   return imageList().value(imageNo);
 }
 
 void ImageService::setLastModified(const QDateTime& lastModified)
@@ -40,14 +50,6 @@ void ImageService::setImageList(const QStringList& imageList)
    }
 }
 
-void ImageService::setRandomImage(const QString& randomImage)
-{
-   if (m_randomImage != randomImage) {
-      m_randomImage = randomImage;
-      emit randomImageChanged();
-   }
-}
-
 void ImageService::updateJSONImageList()
 {
    QUrl url("https://www.neavey.net/image_list.json");  // TODO: Add to settings.
@@ -55,20 +57,6 @@ void ImageService::updateJSONImageList()
    QNetworkAccessManager* nam = new QNetworkAccessManager(this);
    QNetworkReply* rep = nam->get(QNetworkRequest(url));
    connect(rep, &QNetworkReply::finished, this, [this, rep]() { handleNetworkData(rep); });
-}
-
-
-void ImageService::updateRandomImage()
-{
-   const int availableImages = imageList().size();
-
-   if (availableImages == 0) {
-      return;
-   }
-
-   std::uniform_int_distribution<> dist(0, availableImages - 1);
-   const int imageNo = dist(*QRandomGenerator::global());
-   setRandomImage(imageList().value(imageNo));
 }
 
 void ImageService::handleNetworkData(QNetworkReply* networkReply)
@@ -117,5 +105,5 @@ void ImageService::handleNetworkData(QNetworkReply* networkReply)
          qDebug() << "No new images found.";
       }
    }
-   updateRandomImage();
+   emit randomImageChanged();
 }

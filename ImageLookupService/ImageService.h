@@ -21,11 +21,10 @@ public:
    QDateTime lastModified() const { return m_lastModified; }
    int numberOfImages() const { return m_imageList.size(); }
    QStringList imageList() const { return m_imageList; }
-   QString randomImage() const { return m_randomImage; }
+   QString randomImage();
 
    void setLastModified(const QDateTime& lastModified);
    void setImageList(const QStringList& imageList);
-   void setRandomImage(const QString& image);
 
 private slots:
    void handleNetworkData(QNetworkReply* networkReply);
@@ -38,11 +37,8 @@ signals:
 
 private:
    void updateJSONImageList();
-   void updateRandomImage();
 
    QDateTime m_lastModified = QDateTime::currentDateTime();
    QStringList m_imageList;
-   QString m_randomImage;
    QTimer m_imageListUpdateTimer;
-   QTimer m_randomImageTimer;
 };

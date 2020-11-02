@@ -3,15 +3,20 @@ import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.12
 import QtQml 2.12
 
+import "../Controls" as CustomControls
+
 Item {
+   id: mainPage
+   readonly property int margin: 3
+   readonly property int timerSeconds: 10
 
    Rectangle {
       id: screenBorder
       radius: 5
-      anchors.rightMargin: 3
-      anchors.leftMargin: 3
-      anchors.bottomMargin: 3
-      anchors.topMargin: 3
+      anchors.rightMargin: mainPage.margin
+      anchors.leftMargin: mainPage.margin
+      anchors.bottomMargin: mainPage.margin
+      anchors.topMargin: mainPage.margin
       anchors.fill: parent
       border.width: 2
       border.color: "#fb9797"
@@ -19,13 +24,13 @@ Item {
 
       Row {
          id: leftSide
-         width: parent.width
+         width: parent.width - (2 * mainPage.margin)
          anchors.bottom: parent.bottom
-         anchors.bottomMargin: 3
+         anchors.bottomMargin: mainPage.margin
          anchors.top: parent.top
-         anchors.topMargin: 3
+         anchors.topMargin: mainPage.margin
          anchors.left: parent.left
-         anchors.leftMargin: 3
+         anchors.leftMargin: mainPage.margin
 
          Image {
             property var sourceImage
@@ -41,6 +46,19 @@ Item {
             function getSourceImage() {
                return "https://placekeanu.com/" + parent.width + "/" + parent.height
             }
+
+            CustomControls.ProgressBar {
+               id: progressBar
+               height: 5
+               anchors.right: parent.right
+               anchors.left: parent.left
+               anchors.bottom: parent.bottom
+               anchors.leftMargin: 2 * mainPage.margin
+               anchors.rightMargin: 2 * mainPage.margin
+               anchors.bottomMargin: 3
+               from: 0
+               to: mainPage.timerSeconds
+            }
          }
 
          Rectangle {
@@ -52,10 +70,18 @@ Item {
          }
 
          Timer {
-            interval: 5000
+            id: timer
+            interval: 1000 //mainPage.timerInterval
             repeat: true
             running: true
-            onTriggered: { image.sourceImage = image.getSourceImage() }
+            onTriggered: {
+               if (progressBar.value < progressBar.to) {
+                  progressBar.value += 1.0
+               } else {
+                  progressBar.value = progressBar.from
+                  image.sourceImage = image.getSourceImage()
+               }
+            }
          }
       }
    }
