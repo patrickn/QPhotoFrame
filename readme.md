@@ -71,6 +71,14 @@ export QT_QPA_EGLFS_PHYSICAL_HEIGHT=86
 export QT_QPA_EGLFS_HIDECURSOR=1
 ```
 
+### Screen Brightness
+
+The official Raspberry Pi 7" touchscreen creates a virtual filesystem _/sys/class/backlight/rpi_backlight_, which can be used to set the screen brightness from 0 (dark) to 255 (full brightness).
+
+```
+sudo sh -c 'echo "128" > /sys/class/backlight/rpi_backlight/brightness'
+```
+
 ### Troubleshooting
 
 If the touchscreen is not working make sure that _/dev/input/event*_ is readable by the user running the app.
