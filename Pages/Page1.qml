@@ -1,4 +1,5 @@
 import QtQuick 2.12
+import QtQuick.Layouts 1.12
 import QtGraphicalEffects 1.12
 import QtQml 2.12
 
@@ -59,19 +60,19 @@ Item {
             layer.effect: OpacityMask {
                maskSource: mask
             }
-         }
 
-         ProgressBar {
-            id: progressBar
-            height: 3
-            anchors.right: parent.right
-            anchors.left: parent.left
-            anchors.bottom: parent.bottom
-            anchors.leftMargin: 2 * page1.margin
-            anchors.rightMargin: 2 * page1.margin
-            anchors.bottomMargin: page1.margin
-            from: 0
-            to: page1.timerSeconds
+            ProgressBar {
+               id: progressBar
+               height: 3
+               anchors.right: parent.right
+               anchors.left: parent.left
+               anchors.bottom: parent.bottom
+               anchors.leftMargin: 2 * page1.margin
+               anchors.rightMargin: 2 * page1.margin
+               anchors.bottomMargin: page1.margin
+               from: 0
+               to: page1.timerSeconds
+            }
          }
 
          Rectangle {
@@ -103,28 +104,29 @@ Item {
          anchors.top: parent.top
          anchors.right: parent.right
          anchors.bottom: parent.bottom
-         width: clockDisplay.width + 20
+         width: hours.width + minutes.width + tick.width + 20
 
          Column {
+            id: clockDisplay
             spacing: 40
             anchors.horizontalCenter: parent.horizontalCenter
 
             Row {
-               id: clockDisplay
-
                Text {
+                  id: hours
                   text: digitalClock.hours < 10 ? "0" + digitalClock.hours : digitalClock.hours
                   font.pointSize: clockFontPoinSize
                   font.family: "Hack"
                   font.letterSpacing: -10
                }
-               Text {
-                  text: digitalClock.seconds % 2 ? ":" : "."
-                  font.pointSize: clockFontPoinSize
-                  font.family: "Hack"
-                  font.letterSpacing: -15
+
+               Image {
+                  id:tick
+                  source: digitalClock.seconds % 2 ? "/Assets/ticks0.png" : "/Assets/ticks1.png"
                }
+
                Text {
+                  id: minutes
                   text: digitalClock.minutes < 10 ? "0" + digitalClock.minutes : digitalClock.minutes
                   font.pointSize: clockFontPoinSize
                   font.family: "Hack"
@@ -134,30 +136,34 @@ Item {
          }
 
          Text {
-             text: weatherModel.hasValidCity ? weatherModel.city : ""
-             font.family: "Arial"
-             width: parent.width
-             horizontalAlignment: Text.AlignHCenter
-             wrapMode: Text.Wrap
+            id: cityText
+            text: weatherModel.hasValidCity ? weatherModel.city : ""
+            font.family: "Arial"
+            width: parent.width
+            horizontalAlignment: Text.AlignHCenter
+            wrapMode: Text.Wrap
          }
 
-         Column {
+         ColumnLayout {
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.leftMargin: 6
-            anchors.rightMargin: 6
+            anchors.leftMargin: 2 * page1.margin
+            anchors.rightMargin: page1.margin + 1
             width: parent.width
-            spacing: 5
+            height: parent.height - clockDisplay.height - cityText.height - page1.margin
+            spacing: 2
 
             Rectangle {
+               id: internalTemperature
                border.color: "grey"
                color: "transparent"
-               width: parent.width
+               Layout.fillWidth: true
                height: internalTemp.height
+               radius: 5
 
                Row {
                   anchors.fill: parent
-                  anchors.leftMargin: 3
+                  anchors.leftMargin: page1.margin
                   spacing: 10
 
                   Text {
@@ -177,15 +183,16 @@ Item {
             }
 
             Rectangle {
-               id: rectangle
+               id: externalTemperature
                border.color: "grey"
                color: "transparent"
-               width: parent.width
+               Layout.fillWidth: true
                height: externalTemp.height
+               radius: 5
 
                Row {
                   anchors.fill: parent
-                  anchors.leftMargin: 3
+                  anchors.leftMargin: page1.margin
                   spacing: 10
 
                   Text {
@@ -202,6 +209,15 @@ Item {
                      anchors.verticalCenter: parent.verticalCenter
                   }
                }
+            }
+
+            Rectangle {
+               id: imageInfo
+               border.color: "grey"
+               color: "transparent"
+               Layout.fillWidth: true
+               Layout.fillHeight: true
+               radius: 5
             }
          }
       }
