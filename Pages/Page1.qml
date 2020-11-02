@@ -20,8 +20,8 @@ Item {
        id: weatherModel
    }
 
-   ImageURLLookupService {
-      id: imageURLLookup
+   ImageService {
+      id: imageService
    }
 
    Rectangle {
@@ -47,11 +47,10 @@ Item {
          anchors.leftMargin: 3
 
          Image {
-            property var sourceImage
             id: image
             height: parent.height
             width: parent.width
-            source: imageURLLookup.imageURL
+            source: imageService.randomImage
             fillMode: Image.PreserveAspectCrop
             layer.enabled: true
             layer.effect: OpacityMask {
@@ -105,6 +104,7 @@ Item {
 
          Text {
              text: weatherModel.hasValidCity ? weatherModel.city : ""
+             font.family: "Arial"
              width: parent.width
              horizontalAlignment: Text.AlignHCenter
              wrapMode: Text.Wrap
@@ -137,7 +137,7 @@ Item {
 
                   Text {
                      id: internalTemp
-                     font.family: "Helvetica"
+                     font.family: "Arial"
                      font.pointSize: tempFontPointSize
                      text: "19.0°C"
                      anchors.verticalCenter: parent.verticalCenter
@@ -165,7 +165,7 @@ Item {
 
                   Text {
                      id: externalTemp
-                     font.family: "Helvetica"
+                     font.family: "Arial Narrow"
                      font.pointSize: tempFontPointSize
                      text: weatherModel.hasValidWeather ? weatherModel.weather.temperature + "C" : "??"
                      anchors.verticalCenter: parent.verticalCenter

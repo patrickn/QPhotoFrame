@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/6bd28497-7039-4b4f-8090-9d2e591c6d64/deploy-status)](https://app.netlify.com/sites/neaveynet/deploys)
+
 ## Raspberry Pi Photo Frame
 
 * Qt 5.13.2
@@ -46,7 +48,9 @@ Apart from those from the article referenced above, you will need to install the
 
 * geoclue-2.0
 
+#### Fonts
 
+True type fonts (ttf) should be copied to _~/raspi/qt5pi/lib/fonts_ directory, then deployed via the rsync command shown above. 
 
 
 ### Auto startup

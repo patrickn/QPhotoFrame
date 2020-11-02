@@ -6,8 +6,8 @@ ApplicationWindow {
    visible: true
    title: qsTr("Photo Frame")
 
-   //   height: 720
-   //   width: 1280
+   width: 800
+   height: 480
 
    SwipeView {
       id: swipeView

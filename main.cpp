@@ -5,7 +5,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QStandardPaths>
-#include "ImageLookupService/ImageURLLookupService.h"
+#include "ImageLookupService/ImageService.h"
 #include "WeatherModel/WeatherData.h"
 #include "WeatherModel/WeatherModel.h"
 //-----------------------------------------------------------------------------
@@ -20,7 +20,7 @@ auto main(int argc, char *argv[]) -> int
 
    qmlRegisterType<WeatherData>("QPhotoFrame", 1, 0, "WeatherData");
    qmlRegisterType<WeatherModel>("QPhotoFrame", 1, 0, "WeatherModel");
-   qmlRegisterType<ImageURLLookupService>("QPhotoFrame", 1, 0, "ImageURLLookupService");
+   qmlRegisterType<ImageService>("QPhotoFrame", 1, 0, "ImageService");
    qRegisterMetaType<WeatherData>();
 
    QQmlApplicationEngine engine;
