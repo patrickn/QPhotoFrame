@@ -1,10 +1,9 @@
 import QtQuick 2.12
-import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.12
 import QtQml 2.12
 
 import QPhotoFrame 1.0
-import "../Controls" as CustomControls
+import  "../Controls"
 
 Item {
    id: page1
@@ -16,7 +15,7 @@ Item {
    readonly property int timerSeconds: 60 * 10
    readonly property int margin: 3
 
-   CustomControls.DigitalClock {
+   DigitalClock {
       id: digitalClock
    }
 
@@ -60,19 +59,19 @@ Item {
             layer.effect: OpacityMask {
                maskSource: mask
             }
+         }
 
-            CustomControls.ProgressBar {
-               id: progressBar
-               height: 3
-               anchors.right: parent.right
-               anchors.left: parent.left
-               anchors.bottom: parent.bottom
-               anchors.leftMargin: 2 * page1.margin
-               anchors.rightMargin: 2 * page1.margin
-               anchors.bottomMargin: page1.margin
-               from: 0
-               to: page1.timerSeconds
-            }
+         ProgressBar {
+            id: progressBar
+            height: 3
+            anchors.right: parent.right
+            anchors.left: parent.left
+            anchors.bottom: parent.bottom
+            anchors.leftMargin: 2 * page1.margin
+            anchors.rightMargin: 2 * page1.margin
+            anchors.bottomMargin: page1.margin
+            from: 0
+            to: page1.timerSeconds
          }
 
          Rectangle {

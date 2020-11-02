@@ -1,14 +1,13 @@
 import QtQuick 2.12
-import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.12
 import QtQml 2.12
 
-import "../Controls" as CustomControls
+import "../Controls"
 
 Item {
    id: mainPage
    readonly property int margin: 3
-   readonly property int timerSeconds: 10
+   readonly property int timerSeconds: 60 * 60 * 24 // 24 hours
 
    Rectangle {
       id: screenBorder
@@ -47,7 +46,7 @@ Item {
                return "https://placekeanu.com/" + parent.width + "/" + parent.height
             }
 
-            CustomControls.ProgressBar {
+            ProgressBar {
                id: progressBar
                height: 5
                anchors.right: parent.right
@@ -71,7 +70,7 @@ Item {
 
          Timer {
             id: timer
-            interval: 1000 //mainPage.timerInterval
+            interval: 1000
             repeat: true
             running: true
             onTriggered: {
