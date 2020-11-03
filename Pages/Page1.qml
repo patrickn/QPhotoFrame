@@ -61,6 +61,14 @@ Item {
                maskSource: mask
             }
 
+            Rectangle {
+               id: mask
+               width: parent.width
+               height: parent.height
+               radius: 5
+               visible: false
+            }
+
             ImageProgress {
                id: progressBar
                height: 3
@@ -214,22 +222,9 @@ Item {
                MapDisplay {
                   height: imageInfo.height
                   width: imageInfo.width
-
-                  layer.enabled: true
-                  layer.effect: OpacityMask {
-                     maskSource: mask
-                  }
                }
             }
          }
       }
-   }
-
-   Rectangle {
-      id: mask
-      width: parent.width
-      height: parent.height
-      radius: 5
-      visible: false
    }
 }
