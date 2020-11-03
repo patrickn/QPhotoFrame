@@ -57,9 +57,7 @@ Item {
             source: imageService.randomImage
             fillMode: Image.PreserveAspectCrop
             layer.enabled: true
-            layer.effect: OpacityMask {
-               maskSource: mask
-            }
+            layer.effect: OpacityMask { maskSource: mask }
 
             Rectangle {
                id: mask
@@ -104,34 +102,30 @@ Item {
          anchors.top: parent.top
          anchors.right: parent.right
          anchors.bottom: parent.bottom
-         width: hours.width + minutes.width + tick.width + 20
+         width: clockDisplay.width + 12
 
-         Column {
+         Row {
             id: clockDisplay
-            spacing: 40
-            anchors.horizontalCenter: parent.horizontalCenter
 
-            Row {
-               Text {
-                  id: hours
-                  text: digitalClock.hours < 10 ? "0" + digitalClock.hours : digitalClock.hours
-                  font.pointSize: clockFontPoinSize
-                  font.family: "Hack"
-                  font.letterSpacing: -10
-               }
+            Text {
+               id: hours
+               text: digitalClock.hours < 10 ? "0" + digitalClock.hours : digitalClock.hours
+               font.pointSize: clockFontPoinSize
+               font.family: "Hack"
+               font.letterSpacing: -10
+            }
 
-               Image {
-                  id:tick
-                  source: digitalClock.seconds % 2 ? "/Assets/ticks0.png" : "/Assets/ticks1.png"
-               }
+            Image {
+               id:tick
+               source: digitalClock.seconds % 2 ? "/Assets/ticks0.png" : "/Assets/ticks1.png"
+            }
 
-               Text {
-                  id: minutes
-                  text: digitalClock.minutes < 10 ? "0" + digitalClock.minutes : digitalClock.minutes
-                  font.pointSize: clockFontPoinSize
-                  font.family: "Hack"
-                  font.letterSpacing: -10
-               }
+            Text {
+               id: minutes
+               text: digitalClock.minutes < 10 ? "0" + digitalClock.minutes : digitalClock.minutes
+               font.pointSize: clockFontPoinSize
+               font.family: "Hack"
+               font.letterSpacing: -10
             }
          }
 
@@ -220,8 +214,13 @@ Item {
                radius: 5
 
                MapDisplay {
-                  height: imageInfo.height
-                  width: imageInfo.width
+                  height: imageInfo.height - 2
+                  width: imageInfo.width - 2
+                  x: 1
+                  y: 1
+
+                  layer.enabled: true
+                  layer.effect: OpacityMask { maskSource: mask }
                }
             }
          }
