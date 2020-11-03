@@ -3,10 +3,11 @@
         <file>main.qml</file>
         <file>Pages/Page1.qml</file>
         <file>Pages/Page2.qml</file>
-        <file>Controls/ProgressBar.qml</file>
+        <file>Controls/ImageProgress.qml</file>
         <file>Assets/error.jpg</file>
         <file>Controls/DigitalClock.qml</file>
         <file>Assets/ticks0.png</file>
         <file>Assets/ticks1.png</file>
+        <file>Controls/MapDisplay.qml</file>
     </qresource>
 </RCC>

@@ -46,7 +46,7 @@ Item {
                return "https://placekeanu.com/" + parent.width + "/" + parent.height
             }
 
-            ProgressBar {
+            ImageProgress {
                id: progressBar
                height: 5
                anchors.right: parent.right

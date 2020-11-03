@@ -61,7 +61,7 @@ Item {
                maskSource: mask
             }
 
-            ProgressBar {
+            ImageProgress {
                id: progressBar
                height: 3
                anchors.right: parent.right
@@ -73,14 +73,6 @@ Item {
                from: 0
                to: page1.timerSeconds
             }
-         }
-
-         Rectangle {
-            id: mask
-            width: parent.width
-            height: parent.height
-            radius: 5
-            visible: false
          }
 
          Timer {
@@ -218,8 +210,26 @@ Item {
                Layout.fillWidth: true
                Layout.fillHeight: true
                radius: 5
+
+               MapDisplay {
+                  height: imageInfo.height
+                  width: imageInfo.width
+
+                  layer.enabled: true
+                  layer.effect: OpacityMask {
+                     maskSource: mask
+                  }
+               }
             }
          }
       }
+   }
+
+   Rectangle {
+      id: mask
+      width: parent.width
+      height: parent.height
+      radius: 5
+      visible: false
    }
 }
