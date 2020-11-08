@@ -30,7 +30,9 @@ QString ImageService::randomImage()
 
    std::uniform_int_distribution<> dist(0, availableImages - 1);
    const int imageNo = dist(*QRandomGenerator::global());
-   return imageList().value(imageNo);
+   auto item = m_imageList.begin();
+   std::advance(item, imageNo);
+   return item->first;
 }
 
 void ImageService::setLastModified(const QDateTime& lastModified)
@@ -41,7 +43,7 @@ void ImageService::setLastModified(const QDateTime& lastModified)
    }
 }
 
-void ImageService::setImageList(const QStringList& imageList)
+void ImageService::setImageList(const std::map<QString, ImageRecord>& imageList)
 {
    if (m_imageList != imageList) {
       m_imageList = imageList;
@@ -96,9 +98,15 @@ void ImageService::handleNetworkData(QNetworkReply* networkReply)
 
          setLastModified(newLastModified);
 
-         QStringList newImageList;
+         std::map<QString, ImageRecord> newImageList;
          for (const auto& record : jsonMap["image_list"].toList()) {
-            newImageList.append(record.toMap().value(("name")).toString());
+            ImageRecord imageRecord;
+            QString name = record.toMap().value("name").toString();
+            imageRecord.latitude = record.toMap().value("lat").toDouble();
+            imageRecord.longitude = record.toMap().value("lon").toDouble();
+            imageRecord.altitude = record.toMap().value("alt").toDouble();
+            imageRecord.timestamp = record.toMap().value("timestamp").toDateTime();
+            newImageList.insert({name, imageRecord});
          }
          setImageList(newImageList);
       } else {
