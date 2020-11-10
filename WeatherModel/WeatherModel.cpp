@@ -222,7 +222,7 @@ void WeatherModel::handleGeoNetworkData(QNetworkReply* networkReply)
 
 static QString niceTemperatureString(double t)
 {
-    return QString::number(qRound(t - ZERO_KELVIN))/* + QChar(0xB0)*/;
+    return QString::number((t - ZERO_KELVIN), 'f', 1)/* + QChar(0xB0)*/;
 }
 
 void WeatherModel::handleWeatherNetworkData(QNetworkReply* networkReply)
