@@ -28,7 +28,6 @@ class ImageService : public QObject
 
    Q_PROPERTY(QDateTime lastModified READ lastModified NOTIFY lastModifiedChanged)
    Q_PROPERTY(int numberOfImages READ numberOfImages NOTIFY numberOfImagesChanged)
-   Q_PROPERTY(QStringList imageList NOTIFY imageListChanged)
    Q_PROPERTY(QString randomImage READ randomImage NOTIFY randomImageChanged)
    Q_PROPERTY(double latitude READ latitude NOTIFY latitudeChanged)
    Q_PROPERTY(double longitude READ longitude NOTIFY longitudeChanged)
