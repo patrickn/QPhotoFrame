@@ -21,6 +21,6 @@ Item {
        anchors.fill: parent
        plugin: mapPlugin
        center: QtPositioning.coordinate(mapDisplay.lat, mapDisplay.lon)
-       zoomLevel: 14
+       zoomLevel: 3
    }
 }

@@ -1,4 +1,4 @@
-CONFIG += c++14
+CONFIG += c++17
 QT += core network positioning qml quick
 #requires(qtConfig(bearermanagement))
 
@@ -7,6 +7,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         ImageLookupService/ImageService.cpp \
+        TemperatureModule/DS18B20.cpp \
+        TemperatureModule/TemperatureModule.cpp \
         WeatherModel/WeatherData.cpp \
         WeatherModel/WeatherModel.cpp \
         main.cpp
@@ -26,6 +28,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     ImageLookupService/ImageService.h \
+    TemperatureModule/DS18B20.h \
+    TemperatureModule/TemperatureModule.h \
     WeatherModel/WeatherData.h \
     WeatherModel/WeatherModel.h
 

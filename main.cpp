@@ -1,11 +1,12 @@
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-#include <QFile>
 #include <QDir>
+#include <QFile>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QStandardPaths>
 #include "ImageLookupService/ImageService.h"
+#include "TemperatureModule/TemperatureModule.h"
 #include "WeatherModel/WeatherData.h"
 #include "WeatherModel/WeatherModel.h"
 //-----------------------------------------------------------------------------
@@ -21,6 +22,7 @@ auto main(int argc, char *argv[]) -> int
    qmlRegisterType<WeatherData>("QPhotoFrame", 1, 0, "WeatherData");
    qmlRegisterType<WeatherModel>("QPhotoFrame", 1, 0, "WeatherModel");
    qmlRegisterType<ImageService>("QPhotoFrame", 1, 0, "ImageService");
+   qmlRegisterType<TemperatureModule>("QPhotoFrame", 1, 0, "TemperatureModule");
    qRegisterMetaType<WeatherData>();
 
    QQmlApplicationEngine engine;

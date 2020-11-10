@@ -16,8 +16,8 @@ ImageService::ImageService(QObject* parent)
    qDebug() << "ImageService::ImageService()";
 
    connect(&m_imageListUpdateTimer, &QTimer::timeout, [this](){ updateJSONImageList(); });
-   m_imageListUpdateTimer.start(24 * 60 * 60 * 1000); // TODO: Add to settings.
    updateJSONImageList();
+   m_imageListUpdateTimer.start(24 * 60 * 60 * 1000); // TODO: Add to settings.
 }
 
 QString ImageService::randomImage()
@@ -32,6 +32,10 @@ QString ImageService::randomImage()
    const int imageNo = dist(*QRandomGenerator::global());
    auto item = m_imageList.begin();
    std::advance(item, imageNo);
+
+   setLatitude(item->second.latitude);
+   setLongitude(item->second.longitude);
+
    return item->first;
 }
 
@@ -49,6 +53,22 @@ void ImageService::setImageList(const std::map<QString, ImageRecord>& imageList)
       m_imageList = imageList;
       emit imageListChanged();
       emit numberOfImagesChanged();
+   }
+}
+
+void ImageService::setLatitude(double latitude)
+{
+   if (m_latitude != latitude) {
+      m_latitude = latitude;
+      emit latitudeChanged();
+   }
+}
+
+void ImageService::setLongitude(double longitude)
+{
+   if (m_longitude != longitude) {
+      m_longitude = longitude;
+      emit longitudeChanged();
    }
 }
 

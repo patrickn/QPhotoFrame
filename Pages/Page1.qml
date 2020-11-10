@@ -28,6 +28,10 @@ Item {
       id: imageService
    }
 
+   TemperatureModule {
+      id: temperatureModule
+   }
+
    Rectangle {
       id: screenBorder
       radius: 5
@@ -83,7 +87,7 @@ Item {
 
          Timer {
             id: timer
-            interval: 1000 // 1 second
+            interval: 1000 // 1000mS == 1S
             repeat: true
             running: true
             onTriggered: {
@@ -170,7 +174,7 @@ Item {
                      id: internalTemp
                      font.family: "Arial"
                      font.pointSize: tempFontPointSize
-                     text: "19.0°C"
+                     text: temperatureModule.temperature.toFixed(1) + "°C"
                      anchors.verticalCenter: parent.verticalCenter
                   }
                }
@@ -199,14 +203,14 @@ Item {
                      id: externalTemp
                      font.family: "Arial Narrow"
                      font.pointSize: tempFontPointSize
-                     text: weatherModel.hasValidWeather ? weatherModel.weather.temperature + "C" : "??"
+                     text: weatherModel.hasValidWeather ? weatherModel.weather.temperature + "°C" : "??"
                      anchors.verticalCenter: parent.verticalCenter
                   }
                }
             }
 
             Rectangle {
-               id: imageInfo
+               id: imageData
                border.color: "grey"
                color: "transparent"
                Layout.fillWidth: true
@@ -214,10 +218,12 @@ Item {
                radius: 5
 
                MapDisplay {
-                  height: imageInfo.height - 2
-                  width: imageInfo.width - 2
+                  height: imageData.height - 2
+                  width: imageData.width - 2
                   x: 1
                   y: 1
+                  lat: imageService.latitude
+                  lon: imageService.longitude
 
                   layer.enabled: true
                   layer.effect: OpacityMask { maskSource: mask }

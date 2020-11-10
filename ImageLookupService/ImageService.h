@@ -30,7 +30,8 @@ class ImageService : public QObject
    Q_PROPERTY(int numberOfImages READ numberOfImages NOTIFY numberOfImagesChanged)
    Q_PROPERTY(QStringList imageList NOTIFY imageListChanged)
    Q_PROPERTY(QString randomImage READ randomImage NOTIFY randomImageChanged)
-   Q_PROPERTY(QPair<double, double> imageLocation READ imageLocation NOTIFY imageLocationChanged)
+   Q_PROPERTY(double latitude READ latitude NOTIFY latitudeChanged)
+   Q_PROPERTY(double longitude READ longitude NOTIFY longitudeChanged)
 
 public:
    explicit ImageService(QObject* parent = nullptr);
@@ -39,10 +40,13 @@ public:
    int numberOfImages() const { return m_imageList.size(); }
    std::map<QString, ImageRecord> imageList() const { return m_imageList; }
    QString randomImage();
-   QPair<double, double> imageLocation() const { return m_imageLocation; }
+   double latitude() const { return m_latitude; }
+   double longitude() const { return m_longitude; }
 
    void setLastModified(const QDateTime& lastModified);
    void setImageList(const std::map<QString, ImageRecord>& imageList);
+   void setLatitude(double latitude);
+   void setLongitude(double longitude);
 
 private slots:
    void handleNetworkData(QNetworkReply* networkReply);
@@ -52,7 +56,8 @@ signals:
    void numberOfImagesChanged();
    void imageListChanged();
    void randomImageChanged();
-   void imageLocationChanged();
+   void latitudeChanged();
+   void longitudeChanged();
 
 private:
    void updateJSONImageList();
@@ -60,5 +65,6 @@ private:
    QDateTime m_lastModified = QDateTime::currentDateTime();
    std::map<QString, ImageRecord> m_imageList;
    QTimer m_imageListUpdateTimer;
-   QPair<double, double> m_imageLocation;
+   double m_latitude = 0;
+   double m_longitude = 0;
 };
