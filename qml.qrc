@@ -10,5 +10,6 @@
         <file>Assets/ticks1.png</file>
         <file>Controls/MapDisplay.qml</file>
         <file>Pages/Page3.qml</file>
+        <file>Controls/ImageDataWindow.qml</file>
     </qresource>
 </RCC>

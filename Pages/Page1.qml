@@ -1,7 +1,7 @@
-import QtQuick 2.12
-import QtQuick.Layouts 1.12
 import QtGraphicalEffects 1.12
 import QtQml 2.12
+import QtQuick 2.12
+import QtQuick.Layouts 1.12
 
 import QPhotoFrame 1.0
 import  "../Controls"
@@ -82,6 +82,17 @@ Item {
                anchors.bottomMargin: page1.margin
                from: 0
                to: page1.timerSeconds
+            }
+
+            MouseArea {
+               id: mouseArea
+               anchors.fill: parent
+               hoverEnabled: true
+               onDoubleClicked: dataPopup.open()
+            }
+
+            ImageDataWindow {
+               id: dataPopup
             }
          }
 
