@@ -97,8 +97,8 @@ Item {
                data: [imageService.image.name(),
                       imageService.image.date(),
                       imageService.image.time(),
-                      imageService.image.latitude().toFixed(3),
-                      imageService.image.longitude().toFixed(3),
+                      imageService.image.latitudeStr(),
+                      imageService.image.longitudeStr(),
                       imageService.image.altitude().toFixed(1) + "m"]
             }
          }

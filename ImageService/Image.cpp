@@ -29,6 +29,19 @@ bool Image::cacheLocalFile(const QByteArray& byteArray)
    m_longitude = info.GeoLocation.Longitude;
    m_altitude = info.GeoLocation.Altitude;
 
+   // 15°24'15"N, 30°10'3"E
+   m_latitudeStr = QString("%1°%2'%3\"%4")
+                   .arg(info.GeoLocation.LatComponents.degrees)
+                   .arg(info.GeoLocation.LatComponents.minutes)
+                   .arg(info.GeoLocation.LatComponents.seconds)
+                   .arg(info.GeoLocation.LatComponents.direction);
+
+   m_longitudeStr = QString("%1°%2'%3\"%4")
+                    .arg(info.GeoLocation.LonComponents.degrees)
+                    .arg(info.GeoLocation.LonComponents.minutes)
+                    .arg(info.GeoLocation.LonComponents.seconds)
+                    .arg(info.GeoLocation.LonComponents.direction);
+
    const QString imageDataDirectory = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/imageData"; // TODO: constants
    QImage localFile = QImage::fromData(byteArray);
    m_cachedFile = imageDataDirectory + "/" + m_name;
