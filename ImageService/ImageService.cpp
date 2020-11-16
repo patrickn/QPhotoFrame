@@ -103,6 +103,7 @@ void ImageService::handleImageListNetworkData(QNetworkReply* networkReply)
       QJsonObject jsonObject = document.object();
       if (jsonObject.isEmpty()) {
          qDebug() << "JSON object is empty.";
+         return;
       }
 
       QVariantMap jsonMap = jsonObject.toVariantMap();
@@ -122,11 +123,11 @@ void ImageService::handleImageListNetworkData(QNetworkReply* networkReply)
          }
       } else {
          qDebug() << "No new images found.";
+         return;
       }
    }
-//   emit randomImageChanged();
 
-   // TODO: emit signal here to announce JSON list updated
+   emit imageListUpdated();
 }
 
 void ImageService::handleImageDownloadNetworkData(QNetworkReply* networkReply, int imageIndex)

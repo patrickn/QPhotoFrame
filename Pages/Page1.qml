@@ -26,6 +26,7 @@ Item {
 
    ImageService {
       id: imageService
+      onImageListUpdated: updateImage()
    }
 
    TemperatureModule {

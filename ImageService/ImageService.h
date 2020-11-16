@@ -38,6 +38,7 @@ private slots:
 
 signals:
    void imageChanged();
+   void imageListUpdated();
    void lastModifiedChanged();
    void numberOfImagesChanged();
 
