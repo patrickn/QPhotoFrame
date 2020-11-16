@@ -4,10 +4,13 @@ import QtGraphicalEffects 1.0
 
 Popup {
    id: popup
+
+   property var data: []
+
    x: 20
    y: 20
-   width: 200
-   height: 300
+   width: imageData.width
+   height: 150
    modal: true
    focus: true
    closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
@@ -49,17 +52,26 @@ Popup {
       anchors.margins: 10
 
       Column {
-         Text {
-            text: "Name:"
-            color: "white"
-         }
-         Text {
-            text: "Date:"
-            color: "white"
-         }
-         Text {
-            text: "Time:"
-            color: "white"
+         id: imageData
+
+         Repeater {
+            model: ["Name:", "Date:", "Time:", "Lat:", "Lon:", "Alt:"]
+
+            Row {
+               spacing: 10
+               Text {
+                  text: modelData
+                  width: 40
+                  horizontalAlignment: Text.AlignRight
+                  color: "white"
+                  font.italic: true
+               }
+
+               Text {
+                  text: popup.data[index]
+                  color: "white"
+               }
+            }
          }
       }
    }

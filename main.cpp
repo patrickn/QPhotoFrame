@@ -5,7 +5,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QStandardPaths>
-#include "ImageLookupService/ImageService.h"
+#include "ImageService/ImageService.h"
 #include "TemperatureModule/TemperatureModule.h"
 #include "WeatherModel/WeatherData.h"
 #include "WeatherModel/WeatherModel.h"

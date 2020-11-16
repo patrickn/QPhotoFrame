@@ -58,7 +58,7 @@ Item {
             id: image
             height: parent.height
             width: parent.width
-            source: imageService.randomImage
+            source: imageService.image.sourcePath()
             fillMode: Image.PreserveAspectCrop
             layer.enabled: true
             layer.effect: OpacityMask { maskSource: mask }
@@ -93,6 +93,13 @@ Item {
 
             ImageDataWindow {
                id: dataPopup
+
+               data: [imageService.image.name(),
+                      imageService.image.date(),
+                      imageService.image.time(),
+                      imageService.image.latitude().toFixed(3),
+                      imageService.image.longitude().toFixed(3),
+                      imageService.image.altitude().toFixed(3) + "m"]
             }
          }
 
@@ -106,7 +113,7 @@ Item {
                   progressBar.value += 1.0
                } else {
                   progressBar.value = progressBar.from
-                  image.source = imageService.randomImage
+                  imageService.updateImage()
                }
             }
          }
@@ -233,8 +240,8 @@ Item {
                   width: imageData.width - 2
                   x: 1
                   y: 1
-                  lat: imageService.latitude
-                  lon: imageService.longitude
+                  lat: imageService.image.latitude()
+                  lon: imageService.image.longitude()
 
                   layer.enabled: true
                   layer.effect: OpacityMask { maskSource: mask }
