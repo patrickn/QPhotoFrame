@@ -99,7 +99,7 @@ Item {
                       imageService.image.time(),
                       imageService.image.latitude().toFixed(3),
                       imageService.image.longitude().toFixed(3),
-                      imageService.image.altitude().toFixed(3) + "m"]
+                      imageService.image.altitude().toFixed(1) + "m"]
             }
          }
 

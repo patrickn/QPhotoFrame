@@ -9,8 +9,13 @@ Popup {
 
    x: 20
    y: 20
-   width: imageData.width
-   height: 150
+
+   implicitHeight: 100
+   implicitWidth: 140
+
+   height: content.implicitHeight
+   width: content.implicitWidth
+
    modal: true
    focus: true
    closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
@@ -49,15 +54,23 @@ Popup {
       id: content
       anchors.fill: parent
       color: "transparent"
-      anchors.margins: 10
+      anchors {
+         topMargin: 10
+         leftMargin: 25
+      }
+
+      implicitHeight: childrenRect.height + 25
+      implicitWidth: childrenRect.width + 35
 
       Column {
-         id: imageData
+         id: imageDataColumn
 
          Repeater {
             model: ["Name:", "Date:", "Time:", "Lat:", "Lon:", "Alt:"]
 
             Row {
+               id: imageDataRow
+
                spacing: 10
                Text {
                   text: modelData
