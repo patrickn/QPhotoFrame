@@ -88,6 +88,35 @@ sudo sh -c 'echo "1" > /sys/class/backlight/rpi_backlight/bl_power'
 
 ### Troubleshooting
 
+#### Logging
+
+By default only critical errors and warnings are logged, the levels are:
+
+* debug
+* warning
+* critical
+* information
+* fatal
+
+And the categories that can be logged are:
+
+* qpf.img         // image
+* qpf.img.svc     // image service
+* qpf.temp.mod    // temperature module
+* qpf.wthr.data   // weather data
+* qpf.wthr.mod    // weather module
+
+Logging can be set through the environment variable _QT_LOGGING_RULES_, and switching a particular category and level off or on. For example:
+
+```
+QT_LOGGING_RULES="qpf.*.debug=true;qpf.img.info=false"
+```
+
+For more on Qt logging see: https://doc.qt.io/qt-5/qloggingcategory.html
+
+
+#### Touchscreen
+
 If the touchscreen is not working make sure that _/dev/input/event*_ is readable by the user running the app.
 
 After 'apt update' or any other changes you may start getting QOpenGLShader errors:

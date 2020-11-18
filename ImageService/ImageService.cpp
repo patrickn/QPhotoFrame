@@ -1,6 +1,5 @@
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-#include <QDebug>
 #include <QDir>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -8,16 +7,15 @@
 #include <QRandomGenerator>
 #include <QStandardPaths>
 #include <QUrl>
-
+#include "Common/Logging.h"
 #include "ImageService.h"
 //-----------------------------------------------------------------------------
-
 
 ImageService::ImageService(QObject* parent)
    : QObject(parent),
      m_networkAccessManager(new QNetworkAccessManager)
 {
-   qDebug() << "ImageService::ImageService()";
+   qCDebug(imageServiceLog()) << "ImageService::ImageService()";
 
    connect(&m_imageListUpdateTimer, &QTimer::timeout, [this](){ updateJSONImageList(); });
    updateJSONImageList();
@@ -26,7 +24,7 @@ ImageService::ImageService(QObject* parent)
 
 Q_INVOKABLE void ImageService::updateImage()
 {
-   qDebug() << "void ImageService::updateImage()";
+   qCDebug(imageServiceLog()) << "void ImageService::updateImage()";
 
    // Return new random image
    std::uniform_int_distribution<> dist(0, m_images.size() - 1);
@@ -34,11 +32,11 @@ Q_INVOKABLE void ImageService::updateImage()
 
    if (m_currentImageIndex != imageIndex) {
       if (m_images.at(imageIndex)->isCached()) {
-         qDebug() << "Cache - hit: " + m_images.at(imageIndex)->name();
+         qCDebug(imageServiceLog()) << "Cache - hit: " + m_images.at(imageIndex)->name();
          m_currentImageIndex = imageIndex;
          emit imageChanged();
       } else {
-         qDebug() << "Cache - miss: " + m_images.at(imageIndex)->name();
+         qCDebug(imageServiceLog()) << "Cache - miss: " + m_images.at(imageIndex)->name();
          downloadImage(imageIndex);
       }
    }
@@ -67,7 +65,7 @@ void ImageService::updateJSONImageList()
 
 void ImageService::downloadImage(int imageIndex)
 {
-   qDebug() << "ImageService::downloadImage(" << imageIndex << ")";
+   qCDebug(imageServiceLog()) << "ImageService::downloadImage(" << imageIndex << ")";
 
    QNetworkReply* rep = m_networkAccessManager->get(QNetworkRequest(m_images.at(imageIndex)->url()));
    connect(rep, &QNetworkReply::finished, this, [this, rep, imageIndex]() { handleImageDownloadNetworkData(rep, imageIndex); });
@@ -80,10 +78,10 @@ bool ImageService::isIndexValid() const
 
 void ImageService::handleImageListNetworkData(QNetworkReply* networkReply)
 {
-   qDebug() << "ImageService::handleNetworkData(QNetworkReply* networkReply)";
+   qCInfo(imageServiceLog()) << "ImageService::handleNetworkData(QNetworkReply* networkReply)";
 
    if (!networkReply) {
-      qDebug() << "Network error";
+      qCWarning(imageServiceLog()) << "Network error";
       return;
    }
 
@@ -91,18 +89,18 @@ void ImageService::handleImageListNetworkData(QNetworkReply* networkReply)
       QJsonDocument document = QJsonDocument::fromJson(networkReply->readAll());
 
       if (document.isNull()) {
-         qDebug() << "Failed to create JSON document.";
+         qCWarning(imageServiceLog()) << "Failed to create JSON document.";
          return;
       }
 
       if (!document.isObject()) {
-         qDebug() << "JSON is not and object.";
+         qCWarning(imageServiceLog()) << "JSON is not and object.";
          return;
       }
 
       QJsonObject jsonObject = document.object();
       if (jsonObject.isEmpty()) {
-         qDebug() << "JSON object is empty.";
+         qCWarning(imageServiceLog()) << "JSON object is empty.";
          return;
       }
 
@@ -112,7 +110,7 @@ void ImageService::handleImageListNetworkData(QNetworkReply* networkReply)
 
       if ((numberOfImages() != newNumberOfImages) || (lastModified() < newLastModified)) {
 
-         qDebug() << "Found" << newNumberOfImages - numberOfImages() << "new images.";
+         qCDebug(imageServiceLog()) << "Found" << newNumberOfImages - numberOfImages() << "new images.";
 
          setLastModified(newLastModified);
 
@@ -122,7 +120,7 @@ void ImageService::handleImageListNetworkData(QNetworkReply* networkReply)
             m_images.emplace_back(std::move(image));
          }
       } else {
-         qDebug() << "No new images found.";
+         qCDebug(imageServiceLog()) << "No new images found.";
          return;
       }
    }
@@ -132,10 +130,10 @@ void ImageService::handleImageListNetworkData(QNetworkReply* networkReply)
 
 void ImageService::handleImageDownloadNetworkData(QNetworkReply* networkReply, int imageIndex)
 {
-   qDebug() << "ImageService::handleNetworkData(" << networkReply << ", " << imageIndex << ")";
+   qCDebug(imageServiceLog()) << "ImageService::handleNetworkData(" << networkReply << ", " << imageIndex << ")";
 
    if (!networkReply) {
-      qDebug() << "Network error";
+      qCWarning(imageServiceLog()) << "Network error";
       return;
    }
 
@@ -144,7 +142,7 @@ void ImageService::handleImageDownloadNetworkData(QNetworkReply* networkReply, i
       const QString imageDataDirectory = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/imageData"; // TODO: constants
       if (!QDir(imageDataDirectory).exists()) {
          if (!QDir().mkpath(imageDataDirectory)) {
-            qWarning() << "Could not create directory: " + imageDataDirectory;
+            qCWarning(imageServiceLog()) << "Could not create directory: " + imageDataDirectory;
             return;
          }
       }

@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------------------
 #include <QFile>
 #include <QStandardPaths>
-
+#include "Common/Logging.h"
 #include "Image.h"
 #include "easyexif/exif.h"
 //-----------------------------------------------------------------------------
@@ -20,7 +20,7 @@ bool Image::cacheLocalFile(const QByteArray& byteArray)
 
    EXIFInfo info;
    if (int code = info.parseFrom((unsigned char *)byteArray.data(), byteArray.size())){
-      qDebug() << "Error parsing EXIF: code " << code;
+      qCWarning(imageLog) << "Error parsing EXIF: code " << code;
       return false;
    }
 

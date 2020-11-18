@@ -4,16 +4,14 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonValue>
-#include <QLoggingCategory>
 #include <QNetworkConfigurationManager>
 #include <QNetworkReply>
 #include <QUrlQuery>
+#include "Common/Logging.h"
 #include "WeatherModel.h"
 //-----------------------------------------------------------------------------
 
 static const double ZERO_KELVIN = 273.15;
-
-Q_LOGGING_CATEGORY(weatherModelLog, "model")
 
 WeatherModel::WeatherModel(QObject* parent)
     : QObject(parent),

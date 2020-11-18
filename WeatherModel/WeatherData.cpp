@@ -1,10 +1,8 @@
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-#include <QLoggingCategory>
+#include "Common/Logging.h"
 #include "WeatherData.h"
 //-----------------------------------------------------------------------------
-
-Q_LOGGING_CATEGORY(weatherDataLog, "data")
 
 WeatherData::WeatherData(QObject* parent)
    : QObject(parent)

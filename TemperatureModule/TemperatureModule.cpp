@@ -1,10 +1,8 @@
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-#include <QLoggingCategory>
+#include "Common/Logging.h"
 #include "TemperatureModule.h"
 //-----------------------------------------------------------------------------
-
-Q_LOGGING_CATEGORY(temperatureModuleLog, "tempMod")
 
 TemperatureModule::TemperatureModule(QObject *parent)
    : QObject(parent)
@@ -33,4 +31,3 @@ void TemperatureModule::readTemperature()
    setTemperature(99);
 #endif
 }
-

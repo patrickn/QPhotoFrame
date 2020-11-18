@@ -6,6 +6,7 @@ QT += core network positioning qml quick
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
+        Common/Logging.cpp \
         ImageService/Image.cpp \
         ImageService/ImageService.cpp \
         ImageService/easyexif/exif.cpp \
@@ -29,6 +30,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    Common/Logging.h \
     ImageService/Image.h \
     ImageService/ImageService.h \
     ImageService/easyexif/exif.h \
