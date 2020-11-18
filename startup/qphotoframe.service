@@ -6,6 +6,7 @@ After=multi-user.target
 Environment=QT_QPA_EGLFS_PHYSICAL_WIDTH=155
 Environment=QT_QPA_EGLFS_PHYSICAL_HEIGHT=86
 Environment=QT_QPA_EGLFS_HIDECURSOR=1
+# Environment=QT_LOGGING_RULES="qpf.*.debug=true"
 Type=idle
 User=pi
 Group=pi
