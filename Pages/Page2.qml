@@ -5,17 +5,17 @@ import QtQml 2.12
 import "../Controls"
 
 Item {
-   id: mainPage
+   id: page2
    readonly property int margin: 3
    readonly property int timerSeconds: 60 * 60 * 24 // 24 hours
 
    Rectangle {
       id: screenBorder
       radius: 5
-      anchors.rightMargin: mainPage.margin
-      anchors.leftMargin: mainPage.margin
-      anchors.bottomMargin: mainPage.margin
-      anchors.topMargin: mainPage.margin
+      anchors.rightMargin: page2.margin
+      anchors.leftMargin: page2.margin
+      anchors.bottomMargin: page2.margin
+      anchors.topMargin: page2.margin
       anchors.fill: parent
       border.width: 2
       border.color: "#fb9797"
@@ -23,13 +23,13 @@ Item {
 
       Row {
          id: leftSide
-         width: parent.width - (2 * mainPage.margin)
+         width: parent.width - (2 * page2.margin)
          anchors.bottom: parent.bottom
-         anchors.bottomMargin: mainPage.margin
+         anchors.bottomMargin: page2.margin
          anchors.top: parent.top
-         anchors.topMargin: mainPage.margin
+         anchors.topMargin: page2.margin
          anchors.left: parent.left
-         anchors.leftMargin: mainPage.margin
+         anchors.leftMargin: page2.margin
 
          Image {
             property var sourceImage
@@ -52,11 +52,11 @@ Item {
                anchors.right: parent.right
                anchors.left: parent.left
                anchors.bottom: parent.bottom
-               anchors.leftMargin: 2 * mainPage.margin
-               anchors.rightMargin: 2 * mainPage.margin
+               anchors.leftMargin: 2 * page2.margin
+               anchors.rightMargin: 2 * page2.margin
                anchors.bottomMargin: 3
                from: 0
-               to: mainPage.timerSeconds
+               to: page2.timerSeconds
             }
          }
 

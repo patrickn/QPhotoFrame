@@ -11,5 +11,8 @@
         <file>Controls/MapDisplay.qml</file>
         <file>Pages/Page3.qml</file>
         <file>Controls/ImageDataWindow.qml</file>
+        <file>Controls/ControlLabel.qml</file>
+        <file>Controls/VersionText.qml</file>
+        <file>Assets/neavey_net.png</file>
     </qresource>
 </RCC>
