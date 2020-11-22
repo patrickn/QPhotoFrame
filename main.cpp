@@ -2,6 +2,7 @@
 //-----------------------------------------------------------------------------
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 #include "Common/Logging.h"
 #include "ImageService/ImageService.h"
 #include "TemperatureModule/TemperatureModule.h"
@@ -25,6 +26,10 @@ auto main(int argc, char *argv[]) -> int
 
    QGuiApplication app(argc, argv);
    QQmlApplicationEngine engine;
+
+   ImageService imageService;
+   engine.rootContext()->setContextProperty("imageService", &imageService);
+
    const QUrl url(QStringLiteral("qrc:/main.qml"));
    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                     &app, [url](QObject *obj, const QUrl &objUrl) {

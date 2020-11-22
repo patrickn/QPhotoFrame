@@ -12,14 +12,46 @@
 //-----------------------------------------------------------------------------
 
 ImageService::ImageService(QObject* parent)
-   : QObject(parent),
-     m_networkAccessManager(new QNetworkAccessManager)
+   : QAbstractListModel(parent)
+   , m_networkAccessManager(new QNetworkAccessManager)
 {
    qCDebug(imageServiceLog()) << "ImageService::ImageService()";
 
    connect(&m_imageListUpdateTimer, &QTimer::timeout, [this](){ updateJSONImageList(); });
    updateJSONImageList();
    m_imageListUpdateTimer.start(24 * 60 * 60 * 1000); // TODO: Add to settings.
+}
+
+QVariant ImageService::data(const QModelIndex& index, int role) const
+{
+   const size_t row = index.row();
+
+   if (row < m_images.size())
+   {
+      switch (role)
+      {
+         case NameRole: return m_images.at(row)->name();
+         case UseCountRole: return m_images.at(row)->accessCount();
+         case ImageRole: {
+            return m_images.at(row)->isCached() ? "file:" + m_images.at(row)->cachedFile() : "/Assets/error.jpg";}
+      }
+   }
+   return QVariant();
+}
+
+int ImageService::rowCount(const QModelIndex& parent) const
+{
+   Q_UNUSED(parent)
+   return m_images.size();
+}
+
+QHash<int, QByteArray> ImageService::roleNames() const
+{
+   QHash<int, QByteArray> roles;
+   roles[NameRole] = "nameRole";
+   roles[ImageRole] = "imageRole";
+   roles[UseCountRole] = "useCountRole";
+   return roles;
 }
 
 Q_INVOKABLE void ImageService::updateImage()
@@ -117,7 +149,9 @@ void ImageService::handleImageListNetworkData(QNetworkReply* networkReply)
          for (const auto& record : jsonMap["image_list"].toList()) {
             QString url = record.toMap().value("name").toString();
             Image* image = new Image(QString(url));
+            beginInsertRows(QModelIndex(), static_cast<int>(m_images.size()), static_cast<int>(m_images.size()));
             m_images.emplace_back(std::move(image));
+            endInsertRows();
          }
       } else {
          qCDebug(imageServiceLog()) << "No new images found.";

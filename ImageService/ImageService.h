@@ -1,6 +1,7 @@
 //-----------------------------------------------------------------------------
 #pragma once
 //-----------------------------------------------------------------------------
+#include <QAbstractListModel>
 #include <QDateTime>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -12,7 +13,7 @@
 //-----------------------------------------------------------------------------
 
 
-class ImageService : public QObject
+class ImageService : public QAbstractListModel
 {
    Q_OBJECT
    Q_PROPERTY(Image image READ image NOTIFY imageChanged)
@@ -22,6 +23,16 @@ class ImageService : public QObject
 
 public:
    explicit ImageService(QObject* parent = nullptr);
+
+   enum ImageRoles {
+      NameRole = Qt::UserRole + 1,
+      ImageRole,
+      UseCountRole
+   };
+
+   QVariant data(const QModelIndex& index, int role) const override;
+   int rowCount(const QModelIndex& parent) const override;
+   QHash<int, QByteArray> roleNames() const override;
 
    Q_INVOKABLE void updateImage();
 

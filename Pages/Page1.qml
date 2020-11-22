@@ -24,9 +24,9 @@ Item {
        id: weatherModel
    }
 
-   ImageService {
-      id: imageService
-      onImageListUpdated: updateImage()
+   Connections {
+      target: imageService
+      onImageListUpdated: imageService.updateImage()
    }
 
    TemperatureModule {

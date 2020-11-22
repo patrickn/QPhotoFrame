@@ -30,6 +30,8 @@ public:
    QUrl url() const { return m_url; };
    bool isCached() const;
    bool cacheLocalFile(const QByteArray& data);
+   QString cachedFile() const { return m_cachedFile; }
+   int accessCount() const { return m_accessCount; }
 
 private:
    QUrl m_url;
