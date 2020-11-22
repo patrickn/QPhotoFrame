@@ -4,10 +4,6 @@ import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.12
 import QtQml 2.12
 
-import Qt.labs.qmlmodels 1.0
-
-
-
 import QPhotoFrame 1.0
 import  "../Controls"
 
@@ -28,94 +24,61 @@ Item {
       border.color: "#fb9797"
       color: "transparent"
 
+      ListView {
+         anchors.fill: parent
+         spacing: 1
+         clip: true
 
-      Column {
-         id: rightSide
-         //            anchors.top: infoScreen.bottom
-         //            anchors.right: parent.right
-         //            anchors.bottom: parent.bottom
+         contentWidth: headerItem.width
+         flickableDirection: Flickable.VerticalFlick
 
+         header: Row {
+            spacing: 5
+            function itemAt(index) { return repeater.itemAt(index) }
+            Repeater {
+               id: repeater
+               model: ["Image", "Name", "Use Count"]
+               Label {
+                  text: modelData
+                  font.bold: true
+                  padding: 10
+                  width: 100
+                  background: Rectangle { color: "silver" }
 
-         TableView {
-            columnSpacing: 1
-            rowSpacing: 1
-            clip: true
-
-            implicitWidth: 200
-            implicitHeight: 100
-
-
-            model: 10
-
-            delegate: Rectangle {
-                implicitWidth: 100
-                implicitHeight: 10
-                border.width: 1
-
-                Text {
-                    text: index
-                    anchors.centerIn: parent
-                }
+               }
             }
          }
 
-         ListView {
-            id: listView
-            implicitWidth: 340
-            implicitHeight: 200
-            flickableDirection: Flickable.VerticalFlick
-            clip: true
+         model: imageService
 
-            header: Row {
-               spacing: 1
-               Repeater {
-                  id: repeater
-                  model: ["Image", "Name", "Occurence"]
-                  Label {
-                     text: modelData
-                     font.bold: true
-                     font.pixelSize: 12
-                     padding: 2
-                     background: Rectangle { color: "silver" }
-                     width: 90
-                  }
-               }
+         delegate: Grid {
+            id: grid
+            columns: 3
+            rows: 1
+            width: 300
+            flow: GridLayout.LeftToRight
+            spacing: 5
+
+            Image {
+               width: 100; height: 70
+               fillMode: Image.PreserveAspectFit
+               source: imageRole
             }
 
-            model: imageService
-            delegate: Column {
-               id: delegate
-
-               width: listView.width
-
-               Row {
-                  spacing: 2
-
-                  Image {
-                     width: 50
-                     source: imageRole
-                     fillMode: Image.PreserveAspectFit
-                  }
-
-                  Text {
-                     width: 90
-                     text: nameRole
-                  }
-
-                  Text {
-                     width: 90
-                     text: useCountRole
-                  }
-               }
-               Rectangle {
-                  color: "silver"
-                  width: parent.width
-                  height: 1
-               }
+            Text {
+               Layout.alignment: Qt.AlignVCenter
+               text: nameRole
+               width: 100
             }
 
-            ScrollIndicator.vertical: ScrollIndicator {}
+            Text {
+               Layout.alignment: Qt.AlignRight
+               text: useCountRole
+               font.pixelSize: 16
+               width: 100
+            }
          }
+         ScrollIndicator.vertical: ScrollIndicator {}
       }
    }
 }

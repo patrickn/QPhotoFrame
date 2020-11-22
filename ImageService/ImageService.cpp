@@ -24,16 +24,17 @@ ImageService::ImageService(QObject* parent)
 
 QVariant ImageService::data(const QModelIndex& index, int role) const
 {
-   const size_t row = index.row();
+   const int row = index.row();
+   const int column = index.column();
 
-   if (row < m_images.size())
-   {
-      switch (role)
-      {
+   if (index.isValid() &&
+       rowIsValid(row) &&
+       columnIsValid(column)) {
+
+      switch (role) {
          case NameRole: return m_images.at(row)->name();
+         case ImageRole: return m_images.at(row)->isCached() ? "file:" + m_images.at(row)->cachedFile() : "/Assets/error.jpg";
          case UseCountRole: return m_images.at(row)->accessCount();
-         case ImageRole: {
-            return m_images.at(row)->isCached() ? "file:" + m_images.at(row)->cachedFile() : "/Assets/error.jpg";}
       }
    }
    return QVariant();
@@ -106,6 +107,16 @@ void ImageService::downloadImage(int imageIndex)
 bool ImageService::isIndexValid() const
 {
    return m_currentImageIndex.has_value() && (m_currentImageIndex < m_images.size());
+}
+
+bool ImageService::rowIsValid(int index) const
+{
+   return ((index >= 0) && (index < rowCount()));
+}
+
+bool ImageService::columnIsValid(int index) const
+{
+   return ((index >= 0) && (index < 3));
 }
 
 void ImageService::handleImageListNetworkData(QNetworkReply* networkReply)

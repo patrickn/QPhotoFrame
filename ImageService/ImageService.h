@@ -31,15 +31,13 @@ public:
    };
 
    QVariant data(const QModelIndex& index, int role) const override;
-   int rowCount(const QModelIndex& parent) const override;
+   int rowCount(const QModelIndex& parent = QModelIndex()) const override;
    QHash<int, QByteArray> roleNames() const override;
 
    Q_INVOKABLE void updateImage();
 
    Image image() const;
-
    QDateTime lastModified() const { return m_lastModified; }
-
    int numberOfImages() const { return m_images.size(); }
    void setLastModified(const QDateTime& lastModified);
 
@@ -57,6 +55,8 @@ private:
    void updateJSONImageList();
    void downloadImage(int imageIndex);
    bool isIndexValid() const;
+   bool isRowValid(int index) const;
+   bool isColumnValid(int index) const;
 
    QNetworkAccessManager* m_networkAccessManager;
    QDateTime m_lastModified = QDateTime::currentDateTime();
