@@ -14,5 +14,7 @@
         <file>Controls/ControlLabel.qml</file>
         <file>Controls/VersionText.qml</file>
         <file>Assets/neavey_net.png</file>
+        <file>Controls/StatsView.qml</file>
+        <file>Controls/SettingsView.qml</file>
     </qresource>
 </RCC>
