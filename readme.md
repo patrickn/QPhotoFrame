@@ -4,6 +4,9 @@
 
 This started out as an exercise to learn a bit about Qt/QML, cross compiling for the Raspberry Pi and to do something with the Touchscreen I had lying around. It downloads and displays images from [my travel website](https://www.neavey.net/) and although the URL is currently hard coded it is relatively straightforward change it. You just need to create a JSON file containing URLs to the images (I [use a script to do this](https://github.com/patrickn/neaveynet-hugo/blob/main/image-search.py) whenever my static site is generated).
 
+The top right corner displays the local time, location and external temperature from the web and the internal temperature read via a [DS18B20](https://datasheets.maximintegrated.com/en/ds/DS18B20.pdf) digital thermometer. The main image is randomly updated at regular intervals and the location read from the EXIF data and displayed on the map.
+
+### Requirements
 
 * Qt 5.13.2
 * Raspberry Pi 3+
