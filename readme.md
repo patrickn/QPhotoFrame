@@ -1,5 +1,3 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/6bd28497-7039-4b4f-8090-9d2e591c6d64/deploy-status)](https://app.netlify.com/sites/neaveynet/deploys)
-
 ## Raspberry Pi Photo Frame
 
 * Qt 5.13.2
