@@ -1,5 +1,10 @@
 ## Raspberry Pi Photo Frame
 
+![QPhotoFrame Screen Shot](Assets/screenshot.png?raw=true "QPhotoFrame Screen Shot")
+
+This started out as an exercise to learn a bit about Qt/QML, cross compiling for the Raspberry Pi and to do something with the Touchscreen I had lying around. It downloads and displays images from [my travel website](https://www.neavey.net/) and although the URL is currently hard coded it is relatively straightforward change it. You just need to create a JSON file containing URLs to the images (I [use a script to do this](https://github.com/patrickn/neaveynet-hugo/blob/main/image-search.py) whenever my static site is generated).
+
+
 * Qt 5.13.2
 * Raspberry Pi 3+
 * Official 7" Touchscreen
@@ -9,7 +14,7 @@ For information about cross compiling for Raspberry Pi using Qt see the article 
 
 ### Dependencies
 
-#### Qt
+#### Qt/QML
 
 The following additional Qt modules are needed:
 
