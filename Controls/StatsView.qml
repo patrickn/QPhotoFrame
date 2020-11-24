@@ -17,12 +17,12 @@ ListView {
       function itemAt(index) { return repeater.itemAt(index) }
       Repeater {
          id: repeater
-         model: ["Image", "Name", "Use Count"]
+         model: ["Image", "Name", "#"]
          Label {
             text: modelData
             font.bold: true
-            padding: 2
-            width: 120
+            padding: 1
+            width: index === 0 ? 100 : (index === 1 ? 210 : 50)
             background: Rectangle { color: "silver" }
          }
       }
@@ -47,14 +47,15 @@ ListView {
       Text {
          Layout.alignment: Qt.AlignVCenter
          text: nameRole
-         width: 100
+         width: 210
+         elide: Text.ElideRight
       }
 
       Text {
          Layout.alignment: Qt.AlignRight
          text: useCountRole
          font.pixelSize: 16
-         width: 100
+         width: 50
       }
    }
    ScrollIndicator.vertical: ScrollIndicator {}
