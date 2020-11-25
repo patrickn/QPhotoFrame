@@ -59,6 +59,9 @@ Q_INVOKABLE void ImageService::updateImage()
 {
    qCDebug(imageServiceLog()) << "void ImageService::updateImage()";
 
+   qDebug() << "#######################################";
+
+
    // Return new random image
    std::uniform_int_distribution<> dist(0, m_images.size() - 1);
    const size_t imageIndex = dist(*QRandomGenerator::global());
@@ -75,9 +78,11 @@ Q_INVOKABLE void ImageService::updateImage()
    }
 }
 
-Image ImageService::image() const
+Image* ImageService::image() const
 {
-   return isIndexValid() ? *m_images.at(m_currentImageIndex.value()) : Image{};
+   qDebug() << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+
+   return isIndexValid() ? m_images.at(m_currentImageIndex.value()) : nullptr;
 }
 
 void ImageService::setLastModified(const QDateTime& lastModified)

@@ -16,7 +16,7 @@
 class ImageService : public QAbstractListModel
 {
    Q_OBJECT
-   Q_PROPERTY(Image image READ image NOTIFY imageChanged)
+   Q_PROPERTY(Image* image READ image NOTIFY imageChanged)
 
    Q_PROPERTY(QDateTime lastModified READ lastModified NOTIFY lastModifiedChanged)
    Q_PROPERTY(int numberOfImages READ numberOfImages NOTIFY numberOfImagesChanged)
@@ -36,7 +36,7 @@ public:
 
    Q_INVOKABLE void updateImage();
 
-   Image image() const;
+   Image* image() const;
    QDateTime lastModified() const { return m_lastModified; }
    int numberOfImages() const { return m_images.size(); }
    void setLastModified(const QDateTime& lastModified);

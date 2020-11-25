@@ -9,6 +9,7 @@ SOURCES += \
         Common/Logging.cpp \
         ImageService/Image.cpp \
         ImageService/ImageService.cpp \
+        ImageService/ImageServiceSortProxy.cpp \
         ImageService/easyexif/exif.cpp \
         TemperatureModule/DS18B20.cpp \
         TemperatureModule/TemperatureModule.cpp \
@@ -33,6 +34,7 @@ HEADERS += \
     Common/Logging.h \
     ImageService/Image.h \
     ImageService/ImageService.h \
+    ImageService/ImageServiceSortProxy.h \
     ImageService/easyexif/exif.h \
     TemperatureModule/DS18B20.h \
     TemperatureModule/TemperatureModule.h \

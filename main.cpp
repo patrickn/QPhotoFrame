@@ -3,6 +3,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <ImageService/ImageServiceSortProxy.h>
 #include "Common/Logging.h"
 #include "ImageService/ImageService.h"
 #include "TemperatureModule/TemperatureModule.h"
@@ -15,12 +16,11 @@ auto main(int argc, char *argv[]) -> int
 //    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
    qInstallMessageHandler(customLogMessageHandler);
    // Set default logging rules
-   QLoggingCategory::setFilterRules("*.debug=false\n"
-                                    "*.info=false\n");
+//   QLoggingCategory::setFilterRules("*.debug=false\n"
+//                                    "*.info=false\n");
 
    qmlRegisterType<WeatherData>("QPhotoFrame", 1, 0, "WeatherData");
    qmlRegisterType<WeatherModel>("QPhotoFrame", 1, 0, "WeatherModel");
-   qmlRegisterType<ImageService>("QPhotoFrame", 1, 0, "ImageService");
    qmlRegisterType<TemperatureModule>("QPhotoFrame", 1, 0, "TemperatureModule");
    qRegisterMetaType<WeatherData>();
 
@@ -28,7 +28,13 @@ auto main(int argc, char *argv[]) -> int
    QQmlApplicationEngine engine;
 
    ImageService imageService;
-   engine.rootContext()->setContextProperty("imageService", &imageService);
+   ImageServiceSortProxy sortFilterProxy;
+   sortFilterProxy.setSourceModel(&imageService);
+//   sortFilterProxy.setDynamicSortFilter(true);
+//   sortFilterProxy.sort(0);
+
+//   engine.rootContext()->setContextProperty("imageService", &imageService);
+   engine.rootContext()->setContextProperty("sortFilterProxy", &sortFilterProxy);
 
    const QUrl url(QStringLiteral("qrc:/main.qml"));
    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

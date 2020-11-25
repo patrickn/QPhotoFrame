@@ -25,8 +25,8 @@ Item {
    }
 
    Connections {
-      target: imageService
-      onImageListUpdated: imageService.updateImage()
+      target: sortFilterProxy
+      onImageListUpdated: sortFilterProxy.updateImage()
    }
 
    TemperatureModule {
@@ -59,7 +59,7 @@ Item {
             id: image
             height: parent.height
             width: parent.width
-            source: imageService.image.sourcePath()
+            source: sortFilterProxy.image.sourcePath()
             fillMode: Image.PreserveAspectCrop
             layer.enabled: true
             layer.effect: OpacityMask { maskSource: mask }
