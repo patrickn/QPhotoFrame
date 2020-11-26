@@ -28,7 +28,7 @@ ListView {
       }
    }
 
-   model: sortFilterProxy
+   model: imageService
 
    delegate: Grid {
       id: grid

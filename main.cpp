@@ -32,9 +32,7 @@ auto main(int argc, char *argv[]) -> int
    sortFilterProxy.setSourceModel(&imageService);
 //   sortFilterProxy.setDynamicSortFilter(true);
 //   sortFilterProxy.sort(0);
-
-//   engine.rootContext()->setContextProperty("imageService", &imageService);
-   engine.rootContext()->setContextProperty("sortFilterProxy", &sortFilterProxy);
+   engine.rootContext()->setContextProperty("imageService", &sortFilterProxy);
 
    const QUrl url(QStringLiteral("qrc:/main.qml"));
    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
