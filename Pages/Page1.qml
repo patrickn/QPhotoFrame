@@ -95,12 +95,12 @@ Item {
             ImageDataWindow {
                id: dataPopup
 
-               data: [imageService.image.name(),
-                      imageService.image.date(),
-                      imageService.image.time(),
-                      imageService.image.latitudeStr(),
-                      imageService.image.longitudeStr(),
-                      imageService.image.altitude().toFixed(1) + "m"]
+               data: [sortFilterProxy.image.name(),
+                      sortFilterProxy.image.date(),
+                      sortFilterProxy.image.time(),
+                      sortFilterProxy.image.latitudeStr(),
+                      sortFilterProxy.image.longitudeStr(),
+                      sortFilterProxy.image.altitude().toFixed(1) + "m"]
             }
          }
 
@@ -114,7 +114,7 @@ Item {
                   progressBar.value += 1.0
                } else {
                   progressBar.value = progressBar.from
-                  imageService.updateImage()
+                  sortFilterProxy.updateImage()
                }
             }
          }
@@ -241,8 +241,8 @@ Item {
                   width: imageData.width - 2
                   x: 1
                   y: 1
-                  lat: imageService.image.latitude()
-                  lon: imageService.image.longitude()
+                  lat: sortFilterProxy.image.latitude()
+                  lon: sortFilterProxy.image.longitude()
 
                   layer.enabled: true
                   layer.effect: OpacityMask { maskSource: mask }
