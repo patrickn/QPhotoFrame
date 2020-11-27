@@ -18,13 +18,9 @@ public:
    Image* image() const;
 
    void setSourceModel(QAbstractItemModel* sourceModel) override;
-
-   //   bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const;
+   bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const;
 
 signals:
    void imageChanged();
    void imageListUpdated();
-
-   // QAbstractProxyModel interface
-public:
 };

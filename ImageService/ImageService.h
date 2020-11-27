@@ -37,6 +37,7 @@ public:
    Q_INVOKABLE void updateImage();
 
    Image* image() const;
+   Image* image(int row) const;
    QDateTime lastModified() const { return m_lastModified; }
    int numberOfImages() const { return m_images.size(); }
    void setLastModified(const QDateTime& lastModified);
@@ -55,8 +56,8 @@ private:
    void updateJSONImageList();
    void downloadImage(int imageIndex);
    bool isIndexValid() const;
-   bool rowIsValid(int index) const;
-   bool columnIsValid(int index) const;
+   bool isRowValid(int index) const;
+   bool isColumnValid(int index) const;
 
    QNetworkAccessManager* m_networkAccessManager;
    QDateTime m_lastModified = QDateTime::currentDateTime();

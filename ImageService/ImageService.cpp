@@ -28,8 +28,8 @@ QVariant ImageService::data(const QModelIndex& index, int role) const
    const int column = index.column();
 
    if (index.isValid() &&
-       rowIsValid(row) &&
-       columnIsValid(column)) {
+       isRowValid(row) &&
+       isColumnValid(column)) {
 
       switch (role) {
          case NameRole: return m_images.at(row)->name();
@@ -59,9 +59,6 @@ Q_INVOKABLE void ImageService::updateImage()
 {
    qCDebug(imageServiceLog()) << "void ImageService::updateImage()";
 
-   qDebug() << "#######################################";
-
-
    // Return new random image
    std::uniform_int_distribution<> dist(0, m_images.size() - 1);
    const size_t imageIndex = dist(*QRandomGenerator::global());
@@ -80,9 +77,12 @@ Q_INVOKABLE void ImageService::updateImage()
 
 Image* ImageService::image() const
 {
-   qDebug() << "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
-
    return isIndexValid() ? m_images.at(m_currentImageIndex.value()) : nullptr;
+}
+
+Image* ImageService::image(int row) const
+{
+   return isRowValid(row) ? m_images.at(row) : nullptr;
 }
 
 void ImageService::setLastModified(const QDateTime& lastModified)
@@ -114,12 +114,12 @@ bool ImageService::isIndexValid() const
    return m_currentImageIndex.has_value() && (m_currentImageIndex < m_images.size());
 }
 
-bool ImageService::rowIsValid(int index) const
+bool ImageService::isRowValid(int index) const
 {
    return ((index >= 0) && (index < rowCount()));
 }
 
-bool ImageService::columnIsValid(int index) const
+bool ImageService::isColumnValid(int index) const
 {
    return ((index >= 0) && (index < 3));
 }
