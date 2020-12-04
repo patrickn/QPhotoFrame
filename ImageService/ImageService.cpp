@@ -164,7 +164,7 @@ void ImageService::handleImageListNetworkData(QNetworkReply* networkReply)
 
          for (const auto& record : jsonMap["image_list"].toList()) {
             QString url = record.toMap().value("name").toString();
-            Image* image = new Image(QString(url));
+            Image* image = new Image(url);
             beginInsertRows(QModelIndex(), static_cast<int>(m_images.size()), static_cast<int>(m_images.size()));
             m_images.emplace_back(std::move(image));
             endInsertRows();
