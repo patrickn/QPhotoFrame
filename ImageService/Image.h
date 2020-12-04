@@ -3,19 +3,21 @@
 //-----------------------------------------------------------------------------
 #include <QDateTime>
 #include <QImage>
+#include <QObject>
 #include <QUrl>
 //-----------------------------------------------------------------------------
 
 
-class Image
+class Image : public QObject
 {
-   Q_GADGET
+   Q_OBJECT
 
 public:
    Image() = default;
-   explicit Image(const QUrl& url)
-      : m_url(url),
-        m_name(url.fileName()) {}
+   explicit Image(const QUrl& url, QObject* parent = nullptr)
+      : QObject(parent)
+      , m_url(url)
+      , m_name(url.fileName()) {}
 
    Q_INVOKABLE QString name() const { return m_name; }
    Q_INVOKABLE QString sourcePath() { ++m_accessCount; return "file:" + m_cachedFile; }
@@ -49,4 +51,4 @@ private:
    int m_accessCount = 0;
 };
 
-Q_DECLARE_METATYPE(Image)
+Q_DECLARE_METATYPE(Image*)

@@ -20,7 +20,6 @@ auto main(int argc, char *argv[]) -> int
 
    qmlRegisterType<WeatherData>("QPhotoFrame", 1, 0, "WeatherData");
    qmlRegisterType<WeatherModel>("QPhotoFrame", 1, 0, "WeatherModel");
-   qmlRegisterType<ImageService>("QPhotoFrame", 1, 0, "ImageService");
    qmlRegisterType<TemperatureModule>("QPhotoFrame", 1, 0, "TemperatureModule");
    qRegisterMetaType<WeatherData>();
 

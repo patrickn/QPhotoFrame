@@ -28,8 +28,8 @@ QVariant ImageService::data(const QModelIndex& index, int role) const
    const int column = index.column();
 
    if (index.isValid() &&
-       rowIsValid(row) &&
-       columnIsValid(column)) {
+       isRowValid(row) &&
+       isColumnValid(column)) {
 
       switch (role) {
          case NameRole: return m_images.at(row)->name();
@@ -75,9 +75,9 @@ Q_INVOKABLE void ImageService::updateImage()
    }
 }
 
-Image ImageService::image() const
+Image* ImageService::image() const
 {
-   return isIndexValid() ? *m_images.at(m_currentImageIndex.value()) : Image{};
+   return isIndexValid() ? m_images.at(m_currentImageIndex.value()) : nullptr;
 }
 
 void ImageService::setLastModified(const QDateTime& lastModified)
@@ -109,12 +109,12 @@ bool ImageService::isIndexValid() const
    return m_currentImageIndex.has_value() && (m_currentImageIndex < m_images.size());
 }
 
-bool ImageService::rowIsValid(int index) const
+bool ImageService::isRowValid(int index) const
 {
    return ((index >= 0) && (index < rowCount()));
 }
 
-bool ImageService::columnIsValid(int index) const
+bool ImageService::isColumnValid(int index) const
 {
    return ((index >= 0) && (index < 3));
 }
