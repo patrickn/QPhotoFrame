@@ -7,12 +7,15 @@
 #include <QRandomGenerator>
 #include <QStandardPaths>
 #include <QUrl>
+
 #include "Common/Logging.h"
 #include "ImageService.h"
+#include "StatsDataObject.h"
+
 //-----------------------------------------------------------------------------
 
 ImageService::ImageService(QObject* parent)
-   : QAbstractListModel(parent)
+   : QObject(parent)
    , m_networkAccessManager(new QNetworkAccessManager)
 {
    qCDebug(imageServiceLog()) << "ImageService::ImageService()";
@@ -20,39 +23,6 @@ ImageService::ImageService(QObject* parent)
    connect(&m_imageListUpdateTimer, &QTimer::timeout, [this](){ updateJSONImageList(); });
    updateJSONImageList();
    m_imageListUpdateTimer.start(24 * 60 * 60 * 1000); // TODO: Add to settings.
-}
-
-QVariant ImageService::data(const QModelIndex& index, int role) const
-{
-   const int row = index.row();
-   const int column = index.column();
-
-   if (index.isValid() &&
-       isRowValid(row) &&
-       isColumnValid(column)) {
-
-      switch (role) {
-         case NameRole: return m_images.at(row)->name();
-         case ImageRole: return m_images.at(row)->isCached() ? "file:" + m_images.at(row)->cachedFile() : "/Assets/error.jpg";
-         case UseCountRole: return m_images.at(row)->accessCount();
-      }
-   }
-   return QVariant();
-}
-
-int ImageService::rowCount(const QModelIndex& parent) const
-{
-   Q_UNUSED(parent)
-   return m_images.size();
-}
-
-QHash<int, QByteArray> ImageService::roleNames() const
-{
-   QHash<int, QByteArray> roles;
-   roles[NameRole] = "nameRole";
-   roles[ImageRole] = "imageRole";
-   roles[UseCountRole] = "useCountRole";
-   return roles;
 }
 
 Q_INVOKABLE void ImageService::updateImage()
@@ -83,15 +53,14 @@ Image* ImageService::image() const
 
 QList<QObject*> ImageService::imageList()
 {
+   // TODO: Sort list by usage, name
    QList<QObject*> dataList;
-   beginResetModel();
    for (const auto& image: m_images) {
       const int useCount = image->accessCount();
       if (useCount > 0) {
          dataList.push_back(new StatsDataObject(image->name(), image->url(), useCount));
       }
    }
-   endResetModel();
    return dataList;
 }
 
@@ -122,16 +91,6 @@ void ImageService::downloadImage(int imageIndex)
 bool ImageService::isIndexValid() const
 {
    return m_currentImageIndex.has_value() && (m_currentImageIndex < m_images.size());
-}
-
-bool ImageService::isRowValid(int index) const
-{
-   return ((index >= 0) && (index < rowCount()));
-}
-
-bool ImageService::isColumnValid(int index) const
-{
-   return ((index >= 0) && (index < 3));
 }
 
 void ImageService::handleImageListNetworkData(QNetworkReply* networkReply)
@@ -175,9 +134,7 @@ void ImageService::handleImageListNetworkData(QNetworkReply* networkReply)
          for (const QVariant& record : jsonMap["image_list"].toList()) {
             QString url = record.toMap().value("name").toString();
             Image* image = new Image(QString(url));
-            beginInsertRows(QModelIndex(), static_cast<int>(m_images.size()), static_cast<int>(m_images.size()));
             m_images.emplace_back(std::move(image));
-            endInsertRows();
          }
       } else {
          qCDebug(imageServiceLog()) << "No new images found.";

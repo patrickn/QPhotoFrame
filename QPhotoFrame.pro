@@ -33,6 +33,7 @@ HEADERS += \
     Common/Logging.h \
     ImageService/Image.h \
     ImageService/ImageService.h \
+    ImageService/StatsDataObject.h \
     ImageService/easyexif/exif.h \
     TemperatureModule/DS18B20.h \
     TemperatureModule/TemperatureModule.h \

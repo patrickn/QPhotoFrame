@@ -1,7 +1,6 @@
 //-----------------------------------------------------------------------------
 #pragma once
 //-----------------------------------------------------------------------------
-#include <QAbstractListModel>
 #include <QDateTime>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -12,40 +11,8 @@
 #include "Image.h"
 //-----------------------------------------------------------------------------
 
-class StatsDataObject : public QObject
-{
-   Q_OBJECT
-   Q_PROPERTY(QString name READ name NOTIFY nameChanged)
-   Q_PROPERTY(QUrl url READ url NOTIFY urlChanged)
-   Q_PROPERTY(int useCount READ useCount NOTIFY useCountChanged)
 
-public:
-   explicit StatsDataObject(const QString& name,
-                            const QUrl& url,
-                            int useCount,
-                            QObject* parent = nullptr)
-      : QObject(parent)
-      , m_name(name)
-      , m_url(url)
-      , m_useCount(useCount) {}
-
-   QString name() const { return m_name; }
-   QUrl url() const { return m_url; }
-   int useCount() const { return m_useCount; }
-
-signals:
-   void nameChanged();
-   void urlChanged();
-   void useCountChanged();
-
-private:
-   QString m_name;
-   QUrl m_url;
-   int m_useCount;
-};
-
-
-class ImageService : public QAbstractListModel
+class ImageService : public QObject
 {
    Q_OBJECT
    Q_PROPERTY(Image* image READ image NOTIFY imageChanged)
@@ -56,16 +23,6 @@ class ImageService : public QAbstractListModel
 
 public:
    explicit ImageService(QObject* parent = nullptr);
-
-   enum ImageRoles {
-      NameRole = Qt::UserRole + 1,
-      ImageRole,
-      UseCountRole
-   };
-
-   QVariant data(const QModelIndex& index, int role) const override;
-   int rowCount(const QModelIndex& parent = QModelIndex()) const override;
-   QHash<int, QByteArray> roleNames() const override;
 
    Q_INVOKABLE void updateImage();
 
@@ -90,8 +47,6 @@ private:
    void updateJSONImageList();
    void downloadImage(int imageIndex);
    bool isIndexValid() const;
-   bool isRowValid(int index) const;
-   bool isColumnValid(int index) const;
 
    QNetworkAccessManager* m_networkAccessManager;
    QDateTime m_lastModified = QDateTime::currentDateTime();
