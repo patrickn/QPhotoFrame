@@ -68,6 +68,7 @@ Q_INVOKABLE void ImageService::updateImage()
          qCDebug(imageServiceLog()) << "Cache - hit: " + m_images.at(imageIndex)->name();
          m_currentImageIndex = imageIndex;
          emit imageChanged();
+         emit imageListChanged();
       } else {
          qCDebug(imageServiceLog()) << "Cache - miss: " + m_images.at(imageIndex)->name();
          downloadImage(imageIndex);
@@ -78,6 +79,20 @@ Q_INVOKABLE void ImageService::updateImage()
 Image* ImageService::image() const
 {
    return isIndexValid() ? m_images.at(m_currentImageIndex.value()) : nullptr;
+}
+
+QList<QObject*> ImageService::imageList()
+{
+   QList<QObject*> dataList;
+   beginResetModel();
+   for (const auto& image: m_images) {
+      const int useCount = image->accessCount();
+      if (useCount > 0) {
+         dataList.push_back(new StatsDataObject(image->name(), image->url(), useCount));
+      }
+   }
+   endResetModel();
+   return dataList;
 }
 
 void ImageService::setLastModified(const QDateTime& lastModified)
@@ -137,7 +152,7 @@ void ImageService::handleImageListNetworkData(QNetworkReply* networkReply)
       }
 
       if (!document.isObject()) {
-         qCWarning(imageServiceLog()) << "JSON is not and object.";
+         qCWarning(imageServiceLog()) << "JSON is not an object.";
          return;
       }
 
@@ -157,7 +172,7 @@ void ImageService::handleImageListNetworkData(QNetworkReply* networkReply)
 
          setLastModified(newLastModified);
 
-         for (const auto& record : jsonMap["image_list"].toList()) {
+         for (const QVariant& record : jsonMap["image_list"].toList()) {
             QString url = record.toMap().value("name").toString();
             Image* image = new Image(QString(url));
             beginInsertRows(QModelIndex(), static_cast<int>(m_images.size()), static_cast<int>(m_images.size()));
@@ -170,6 +185,7 @@ void ImageService::handleImageListNetworkData(QNetworkReply* networkReply)
       }
    }
 
+   emit imageListChanged();
    emit imageListUpdated();
 }
 
@@ -194,6 +210,7 @@ void ImageService::handleImageDownloadNetworkData(QNetworkReply* networkReply, i
       if (m_images.at(imageIndex)->cacheLocalFile(networkReply->readAll())) {
          m_currentImageIndex = imageIndex;
          emit imageChanged();
+         emit imageListChanged();
       }
    }
 }

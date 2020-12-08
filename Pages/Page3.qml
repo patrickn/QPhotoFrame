@@ -57,7 +57,6 @@ Item {
                      source: "/Assets/neavey_net.png"
                      Layout.preferredWidth: 90
                      Layout.preferredHeight: 90
-
                   }
                }
             }

@@ -180,7 +180,7 @@ void WeatherModel::positionUpdated(QGeoPositionInfo gpsPos)
 
 void WeatherModel::positionError(QGeoPositionInfoSource::Error e)
 {
-    qCDebug(weatherModelLog) << "WeatherData::positionError(...)";
+   qCDebug(weatherModelLog) << "WeatherData::positionError(...): " << e;
 }
 
 void WeatherModel::handleGeoNetworkData(QNetworkReply* networkReply)
@@ -284,6 +284,7 @@ void WeatherModel::handleWeatherNetworkData(QNetworkReply* networkReply)
 
 void WeatherModel::handleForecastNetworkData(QNetworkReply* networkReply)
 {
-    qCDebug(weatherModelLog) << "WeatherData::handleForecastNetworkData(...)";
+   Q_UNUSED(networkReply)
 
+   qCDebug(weatherModelLog) << "WeatherData::handleForecastNetworkData(...)";
 }
