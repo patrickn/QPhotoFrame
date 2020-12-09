@@ -106,7 +106,7 @@ Item {
 
          Timer {
             id: timer
-            interval: 1000 // 1000mS == 1S
+            interval: 1000 // Progress bar update interval (1s)
             repeat: true
             running: true
             onTriggered: {
