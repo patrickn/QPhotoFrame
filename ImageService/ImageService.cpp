@@ -53,7 +53,6 @@ Image* ImageService::image() const
 
 QList<QObject*> ImageService::imageList()
 {
-   // TODO: Sort list by usage, name
    QList<QObject*> dataList;
    for (const auto& image: m_images) {
       const int useCount = image->accessCount();
@@ -61,7 +60,29 @@ QList<QObject*> ImageService::imageList()
          dataList.push_back(new StatsDataObject(image->name(), image->url(), useCount));
       }
    }
+
+   std::sort(dataList.begin(), dataList.end(), dataListComparator);
    return dataList;
+}
+
+bool ImageService::dataListComparator(const QObject* left, const QObject* right)
+{
+   const StatsDataObject* leftObj = dynamic_cast<const StatsDataObject*>(left);
+   const StatsDataObject* rightObj = dynamic_cast<const StatsDataObject*>(right);
+
+   qCDebug(imageServiceLog()) << "ImageService::dataListComparator(" << leftObj->name() << ", " << rightObj->name() << ")";
+
+   // Sort the list first by descending use count, then alphabetically by name
+
+   if (leftObj->useCount() > rightObj->useCount()) return true;
+   if (rightObj->useCount() > leftObj->useCount()) return false;
+
+   // left==right for primary condition, so go to secondary
+
+   if (QString::compare(leftObj->name(), rightObj->name(), Qt::CaseInsensitive) < 0) return true;
+   if (QString::compare(rightObj->name(), leftObj->name(), Qt::CaseInsensitive) < 0) return false;
+
+   return false;
 }
 
 void ImageService::setLastModified(const QDateTime& lastModified)

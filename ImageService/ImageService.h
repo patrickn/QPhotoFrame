@@ -28,6 +28,7 @@ public:
 
    Image* image() const;
    QList<QObject*> imageList();
+   static bool dataListComparator(const QObject* left, const QObject* right);
    QDateTime lastModified() const { return m_lastModified; }
    int numberOfImages() const { return m_images.size(); }
    void setLastModified(const QDateTime& lastModified);

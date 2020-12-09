@@ -74,7 +74,7 @@ Item {
 
                GroupBox {
                   id: leftSide
-                  title: "Preferences"
+                  title: "<b><u>Preferences</u></b>"
                   Layout.fillHeight: true
                   Layout.preferredWidth: infoScreen.width / 2
                   Layout.leftMargin: 3
@@ -91,7 +91,7 @@ Item {
 
                GroupBox {
                   id: rightSide
-                  title: "Frequency Stats"
+                  title: "<b><u>Frequency Stats</u></b>"
                   Layout.fillHeight: true
                   Layout.fillWidth: true
                   Layout.rightMargin: 3

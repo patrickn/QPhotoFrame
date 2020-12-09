@@ -11,7 +11,7 @@ Item {
       id: displayListView
 
       anchors.fill: parent
-      spacing: 0
+      spacing: 2
       clip: true
 
       contentWidth: headerItem.width
@@ -27,7 +27,7 @@ Item {
                text: modelData
                font.bold: true
                padding: 1
-               width: index === 0 ? 100 : (index === 1 ? 210 : 50)
+               width: index === 0 ? 90 : (index === 1 ? 230 : 70)
                background: Rectangle { color: "silver" }
             }
          }
@@ -40,20 +40,20 @@ Item {
          id: grid
          columns: 3
          rows: 1
-         width: 300
+//         width: 400
          flow: GridLayout.LeftToRight
          spacing: 5
 
          Image {
-            width: 100; height: 70
-            fillMode: Image.PreserveAspectFit
+            width: 90; height: 60
+            fillMode: Image.PreserveAspectCrop
             source: modelData.url
          }
 
          Text {
             Layout.alignment: Qt.AlignVCenter
             text: modelData.name
-            width: 210
+            width: 230
             elide: Text.ElideRight
          }
 
@@ -61,7 +61,7 @@ Item {
             Layout.alignment: Qt.AlignRight
             text: modelData.useCount
             font.pixelSize: 16
-            width: 50
+            width: 70
          }
       }
    }
