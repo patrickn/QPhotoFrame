@@ -8,6 +8,7 @@ Item {
    property int hours
    property int minutes
    property int seconds
+   property string dateString
    property real shift
    property bool night: false
    property bool internationalTime: false
@@ -18,6 +19,7 @@ Item {
        night = ( hours < 7 || hours > 19 )
        minutes = internationalTime ? date.getUTCMinutes() + ((clock.shift % 1) * 60) : date.getMinutes()
        seconds = date.getUTCSeconds();
+       dateString = date.toDateString();
    }
 
    Timer {

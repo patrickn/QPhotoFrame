@@ -9,7 +9,7 @@ import  "../Controls"
 Item {
    id: page1
 
-   readonly property int clockFontPoinSize: 45
+   readonly property int clockFontPointSize: 45
    readonly property int tempFontPointSize: 15
    readonly property int smallLabelFontPointSize: 8
    readonly property int tinyLabelFontPointSize: 6
@@ -122,18 +122,19 @@ Item {
 
       Column {
          id: rightSide
-         anchors.top: parent.top
-         anchors.right: parent.right
-         anchors.bottom: parent.bottom
+         anchors.top: screenBorder.top
+         anchors.right: screenBorder.right
+         anchors.bottom: screenBorder.bottom
          width: clockDisplay.width + 12
 
          Row {
             id: clockDisplay
+            height: hours.font.pixelSize
 
             Text {
                id: hours
                text: digitalClock.hours < 10 ? "0" + digitalClock.hours : digitalClock.hours
-               font.pointSize: clockFontPoinSize
+               font.pointSize: clockFontPointSize
                font.family: "Hack"
                font.letterSpacing: -10
             }
@@ -146,10 +147,20 @@ Item {
             Text {
                id: minutes
                text: digitalClock.minutes < 10 ? "0" + digitalClock.minutes : digitalClock.minutes
-               font.pointSize: clockFontPoinSize
+               font.pointSize: clockFontPointSize
                font.family: "Hack"
                font.letterSpacing: -10
             }
+         }
+
+         Text {
+            id: dateText
+            text: digitalClock.dateString
+            font.family: "Arial"
+            font.pointSize: 10
+            width: parent.width
+            horizontalAlignment: Text.AlignHCenter
+            wrapMode: Text.Wrap
          }
 
          Text {
@@ -162,13 +173,13 @@ Item {
          }
 
          ColumnLayout {
+            id: temperatureDisplay
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.leftMargin: 2 * page1.margin
             anchors.rightMargin: page1.margin + 1
             width: parent.width
-            height: parent.height - clockDisplay.height - cityText.height - page1.margin
-            spacing: 2
+            spacing: 1
 
             Rectangle {
                id: internalTemperature
@@ -233,7 +244,7 @@ Item {
                border.color: "grey"
                color: "transparent"
                Layout.fillWidth: true
-               Layout.fillHeight: true
+               implicitHeight: screenBorder.height - clockDisplay.height - dateText.height - cityText.height - temperatureDisplay.height - page1.margin
                radius: 5
 
                MapDisplay {
