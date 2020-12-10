@@ -15,8 +15,8 @@ auto main(int argc, char *argv[]) -> int
 //    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
    qInstallMessageHandler(customLogMessageHandler);
    // Set default logging rules
-   QLoggingCategory::setFilterRules("*.debug=false\n"
-                                    "*.info=false\n");
+//   QLoggingCategory::setFilterRules("*.debug=false\n"
+//                                    "*.info=false\n");
 
    qmlRegisterType<WeatherData>("QPhotoFrame", 1, 0, "WeatherData");
    qmlRegisterType<WeatherModel>("QPhotoFrame", 1, 0, "WeatherModel");

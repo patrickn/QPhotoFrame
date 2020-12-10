@@ -10,6 +10,7 @@ SOURCES += \
         ImageService/Image.cpp \
         ImageService/ImageService.cpp \
         ImageService/easyexif/exif.cpp \
+        Settings/Settings.cpp \
         TemperatureModule/DS18B20.cpp \
         TemperatureModule/TemperatureModule.cpp \
         WeatherModel/WeatherData.cpp \
@@ -35,6 +36,7 @@ HEADERS += \
     ImageService/ImageService.h \
     ImageService/StatsDataObject.h \
     ImageService/easyexif/exif.h \
+    Settings/Settings.h \
     TemperatureModule/DS18B20.h \
     TemperatureModule/TemperatureModule.h \
     WeatherModel/WeatherData.h \
