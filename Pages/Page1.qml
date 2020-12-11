@@ -168,6 +168,8 @@ Item {
             text: weatherModel.hasValidCity ? weatherModel.city : ""
             font.family: "Arial"
             width: parent.width
+            height: contentHeight
+            leftPadding: 1
             horizontalAlignment: Text.AlignHCenter
             wrapMode: Text.Wrap
          }
