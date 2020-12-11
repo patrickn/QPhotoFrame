@@ -70,4 +70,5 @@ private:
     QElapsedTimer _throttle;
     QTimer _delayedCityRequestTimer;
     QTimer _requestNewWeatherTimer;
+    QString m_weatherDataAppId;
 };

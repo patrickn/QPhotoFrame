@@ -6,6 +6,7 @@
 #include <QJsonValue>
 #include <QNetworkConfigurationManager>
 #include <QNetworkReply>
+#include <QProcessEnvironment>
 #include <QUrlQuery>
 #include "Common/Logging.h"
 #include "WeatherModel.h"
@@ -19,27 +20,32 @@ WeatherModel::WeatherModel(QObject* parent)
       _nam(nullptr),
       _ns(nullptr),
       _nErrors(0),
-      _minMsBeforeNewRequest(baseMsBeforeNewRequest)
+      _minMsBeforeNewRequest(baseMsBeforeNewRequest),
+      m_weatherDataAppId(QProcessEnvironment::systemEnvironment().value("QPF_WEATHERDATA_APPID"))
 {
-    _delayedCityRequestTimer.setSingleShot(true);
-    _delayedCityRequestTimer.setInterval(1000); // 1 s
-    _requestNewWeatherTimer.setSingleShot(false);
-    _requestNewWeatherTimer.setInterval(20 * 60 * 1000); // 20 mins
-    _throttle.invalidate();
+   if (m_weatherDataAppId.isEmpty()) {
+      qCCritical(weatherModelLog()) << "Critical error: QPF_WEATHERDATA_APPID not set. Unable to retrieve weather data.";
+   }
 
-    connect(&_delayedCityRequestTimer, SIGNAL(timeout()), this, SLOT(queryCity()));
-    connect(&_requestNewWeatherTimer, SIGNAL(timeout()), this, SLOT(refreshWeather()));
-    _requestNewWeatherTimer.start();
+   _delayedCityRequestTimer.setSingleShot(true);
+   _delayedCityRequestTimer.setInterval(1000); // 1 s
+   _requestNewWeatherTimer.setSingleShot(false);
+   _requestNewWeatherTimer.setInterval(20 * 60 * 1000); // 20 mins
+   _throttle.invalidate();
 
-    _nam = new QNetworkAccessManager;
+   connect(&_delayedCityRequestTimer, SIGNAL(timeout()), this, SLOT(queryCity()));
+   connect(&_requestNewWeatherTimer, SIGNAL(timeout()), this, SLOT(refreshWeather()));
+   _requestNewWeatherTimer.start();
 
-    QNetworkConfigurationManager ncm;
-    _ns = new QNetworkSession(ncm.defaultConfiguration(), this);
-    connect(_ns, SIGNAL(opened()), this, SLOT(networkSessionOpened()));
-    if (_ns->isOpen()) {
-        this->networkSessionOpened();
-    }
-    _ns->open();
+   _nam = new QNetworkAccessManager;
+
+   QNetworkConfigurationManager ncm;
+   _ns = new QNetworkSession(ncm.defaultConfiguration(), this);
+   connect(_ns, SIGNAL(opened()), this, SLOT(networkSessionOpened()));
+   if (_ns->isOpen()) {
+      this->networkSessionOpened();
+   }
+   _ns->open();
 }
 
 WeatherModel::~WeatherModel()
@@ -86,7 +92,7 @@ void WeatherModel::refreshWeather()
 
     query.addQueryItem("q", _city);
     query.addQueryItem("mode", "json");
-    query.addQueryItem("APPID", QStringLiteral("36496bad1955bf3365448965a42b9eac"));
+    query.addQueryItem("APPID", m_weatherDataAppId);
     url.setQuery(query);
 
     QNetworkReply* rep = _nam->get(QNetworkRequest(url));
@@ -146,7 +152,7 @@ void WeatherModel::queryCity()
     query.addQueryItem("lat", latitude);
     query.addQueryItem("lon", longitude);
     query.addQueryItem("mode", "json");
-    query.addQueryItem("APPID", QStringLiteral("36496bad1955bf3365448965a42b9eac"));
+    query.addQueryItem("APPID", m_weatherDataAppId);
     url.setQuery(query);
     qCDebug(weatherModelLog) << "submitting API request";
 
