@@ -7,6 +7,7 @@ Environment=QT_QPA_EGLFS_PHYSICAL_WIDTH=155
 Environment=QT_QPA_EGLFS_PHYSICAL_HEIGHT=86
 Environment=QT_QPA_EGLFS_HIDECURSOR=1
 # Environment=QT_LOGGING_RULES="qpf.*.debug=true"
+Environment=QPF_WEATHERDATA_APPID=""   # Get your APP ID from openweathermap.org
 Type=idle
 User=pi
 Group=pi

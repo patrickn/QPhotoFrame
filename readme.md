@@ -69,6 +69,14 @@ There is a _systemd_ startup script in the _startup_ directory. To use, copy to 
    $ sudo systemctl enable qphotoframe.service
 ```
 
+### APP ID Key
+
+The external temperature and the current location is uses data provided by [OpenWeather](openweathermap.org). To use the service you will need to register for free and get an APP ID. Then set the environment variable QPF_WEATHERDATA_APPID to the APP ID, ie:
+
+```
+ export QPF_WEATHERDATA_APPID="lkcbqn9872335hjdne98sdf9f98skjsr"
+```
+
 ### Raspberry Pi Environment
 
 ```
