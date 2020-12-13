@@ -61,9 +61,7 @@ Item {
                }
             }
 
-            VersionText {
-               version: "0.1.0"   // TODO: Generate version numbers automatically
-            }
+            VersionText {}
          }
 
          ColumnLayout {

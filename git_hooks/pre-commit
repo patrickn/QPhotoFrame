@@ -9,29 +9,29 @@ if [[ $git_string =~ $version_regex ]]; then
     patch_version="${BASH_REMATCH[3]}"
     commits_ahead="${BASH_REMATCH[4]}"
 else
-    echo "Error: git describe did not output a valid version string. Unable to update Version.cpp" >&2
+    echo "Error: git describe did not output a valid version string. Unable to update VersionText.qml" >&2
     exit 1
 fi
 
 version_num="${major_version}.${minor_version}.${patch_version}"
 version_num_plus_commits="${version_num}+${commits_ahead}"
+[ $commits_ahead -eq 0 ] && version_text="${version_num}" || version_text="${version_num_plus_commits}"
 
 # Working directory of a git hook is always the root of the repo
-cat > $(pwd)/Common/Version.cpp <<EOM
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-#include <Version.h>
-//-----------------------------------------------------------------------------
+cat > $(pwd)/Controls/VersionText.qml <<EOM
 
-namespace qphotoframe 
-{
-   const int MAJOR_VERSION = $major_version;
-   const int MINOR_VERSION = $minor_version;
-   const int PATCH_VERSION = $patch_version;
-   const int COMMITS_AHEAD_OF_VERSION = $commits_ahead;
-   const char* VERSION_STRING = "${version_num}";
-   const char* VERSION_STRING_PLUS_COMMITS = "${version_num_plus_commits}";
+import QtQuick 2.12
+
+Text {
+   anchors.top: parent.top
+   anchors.right: parent.right
+   anchors.rightMargin: 10
+   anchors.topMargin: 3
+   text: "Version: " + "${version_text}" + " Built: " + Qt.formatDateTime(new Date(), "dd MMM yy hh:mm")
+   font.pointSize: 7
+   font.family: "Helvetica"
+   color: "gray"
 }
 EOM
 
-git add $(pwd)/Common/Version.cpp
+git add $(pwd)/Controls/VersionText.qml
