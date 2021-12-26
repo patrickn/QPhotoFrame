@@ -150,4 +150,35 @@ It seems that the lib _/usr/lib/arm-linux-gnueabihf/libGLESv2.so.2_ is wrong and
     $ sudo ln -s /opt/vc/lib/libbrcmGLESv2.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so.2
 ```
 
+#### External temperature not being displayed
 
+[geoclue](https://gitlab.freedesktop.org/geoclue/geoclue/-/wikis/home) is a service that is used to provide positioning information to an application and is used by the Qt Positioning library. An update to this service caused a failure in the external temperature display, meaning it always displayed ?? as it could not resolve the location information required to retrieve the temperature.
+
+Additionall you will see something like this in the log file: 
+
+```
+[26/12/2021 16:40:48]{crit:qt.positioning} Unable to start the client: "org.freedesktop.DBus.Error.AccessDenied" "'QPhotoFrame' disallowed, no agent for UID 1000"
+```
+
+To fix this issue you need to start the _geoclue_ agent at start up with a systemd script. As _root_, create the file _/lib/systemd/system/geoclue-agent.service_, containing the following:
+
+```
+[Unit]
+Description=QPhotoFrame needs to get a (geo)clue
+
+[Service]
+User=pi
+Group=pi
+ExecStart=/usr/lib/geoclue-2.0/demos/agent
+
+[Install]
+WantedBy=default.target
+```
+
+Then enable the service by running:
+
+```
+    $ sudo systemctl enable geoclue-agent.service
+```
+
+Reboot and the external temperature should be displayed correctly.

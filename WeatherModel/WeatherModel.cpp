@@ -178,7 +178,7 @@ void WeatherModel::networkSessionOpened()
 
 void WeatherModel::positionUpdated(QGeoPositionInfo gpsPos)
 {
-    qCDebug(weatherModelLog) << "WeatherData::positionUpdated(...)";
+    qCDebug(weatherModelLog) << "WeatherModel::positionUpdated(...)";
 
     _coord = gpsPos.coordinate();
     queryCity();
@@ -186,12 +186,12 @@ void WeatherModel::positionUpdated(QGeoPositionInfo gpsPos)
 
 void WeatherModel::positionError(QGeoPositionInfoSource::Error e)
 {
-   qCDebug(weatherModelLog) << "WeatherData::positionError(...): " << e;
+   qCDebug(weatherModelLog) << "WeatherModel::positionError(...): " << e;
 }
 
 void WeatherModel::handleGeoNetworkData(QNetworkReply* networkReply)
 {
-    qCDebug(weatherModelLog) << "WeatherData::handleGeoNetworkData(...)";
+    qCDebug(weatherModelLog) << "WeatherModel::handleGeoNetworkData(...)";
 
     if (!networkReply) {
         hadError(false); // should retry?
@@ -231,7 +231,7 @@ static QString niceTemperatureString(double t)
 
 void WeatherModel::handleWeatherNetworkData(QNetworkReply* networkReply)
 {
-    qCDebug(weatherModelLog) << "WeatherData::handleWeatherNetworkData(...)";
+    qCDebug(weatherModelLog) << "WeatherModel::handleWeatherNetworkData(...)";
 
     if (!networkReply) {
         return;
@@ -292,5 +292,5 @@ void WeatherModel::handleForecastNetworkData(QNetworkReply* networkReply)
 {
    Q_UNUSED(networkReply)
 
-   qCDebug(weatherModelLog) << "WeatherData::handleForecastNetworkData(...)";
+   qCDebug(weatherModelLog) << "WeatherModel::handleForecastNetworkData(...)";
 }
